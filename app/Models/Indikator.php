@@ -9,5 +9,12 @@ class Indikator extends Model
 {
     use HasFactory;
     protected $table = 'indikator';
+
+    protected $fillable = [
+        'judul',
+        'isi',
+        'foto',
+    ];
+
     protected $guarded = [];
 }

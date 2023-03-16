@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+
+use App\Models\Preferensi;
+use App\Models\Survey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,8 +22,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nama',
+        'telpon',
+        'alamat',
+        'foto_ktp',
+        'is_admin',
+        'is_partisipasi',
+        'survey_is_draft',
+        // 'email',
         'password',
     ];
 
@@ -41,4 +51,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The survei that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function survei(): BelongsToMany
+    {
+        return $this->belongsToMany(Survei::class, 'tinjauan');
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Preferensi;
 use App\Models\Survey;
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +18,7 @@ class CreateTinjauanTable extends Migration
     {
         Schema::create('tinjauan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->onDelete("cascade");
+            $table->foreignIdFor(User::class, 'user_id')->constrained('user', 'id')->onDelete("cascade");
             $table->foreignIdFor(Preferensi::class, 'preferensi_id')->constrained('preferensi', 'id')->onDelete("cascade");
             $table->foreignIdFor(Survey::class, 'survey_id')->constrained('survey', 'id')->onDelete("cascade");
             $table->timestamps();
