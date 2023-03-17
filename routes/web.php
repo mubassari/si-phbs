@@ -7,9 +7,9 @@ Route::get('', function () {
 });
 
 Route::prefix('pengguna')->name('pengguna.')->group(function () {
+    Route::get('')->name('list');
     Route::get('daftar')->name('daftar');
     Route::get('masuk')->name('masuk');
-    Route::get('list')->name('list');
     Route::get('keluar')->name('keluar');
 
     Route::prefix('{pengguna}')->group(function () {
@@ -20,12 +20,25 @@ Route::prefix('pengguna')->name('pengguna.')->group(function () {
     });
 });
 
-Route::prefix('survei')->name('survei.')->group(function () {
+Route::prefix('survey')->name('survey.')->group(function () {
     Route::get('')->name('isi');
+    Route::post('')->name('simpan');
     Route::get('list')->name('list');
 
     Route::prefix('{pengguna}')->name('pengguna.')->group(function () {
         Route::get('')->name('detail');
         Route::post('')->name('verif');
+    });
+});
+
+Route::prefix('indikator')->name('indikator.')->group(function () {
+    Route::get('')->name('list');
+    Route::get('buat')->name('buat');
+    Route::post('')->name('simpan');
+    Route::prefix('{indikator}')->group(function () {
+        Route::get('')->name('tampil');
+        Route::get('ubah')->name('ubah');
+        Route::put('')->name('update');
+        Route::delete('')->name('hapus');
     });
 });
