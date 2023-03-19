@@ -22,7 +22,9 @@ Route::prefix('pengguna')->name('pengguna.')->group(function () {
 
 Route::prefix('survey')->name('survey.')->group(function () {
     Route::get('')->name('isi');
-    Route::post('')->name('simpan');
+    Route::post('')->name('kirim');
+    Route::get('buat')->name('buat');
+    Route::post('buat')->name('simpan');
     Route::get('list')->name('list');
 
     Route::prefix('{pengguna}')->name('pengguna.')->group(function () {
