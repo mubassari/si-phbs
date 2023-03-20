@@ -23,7 +23,17 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="" class="nav-link"><i class="nav-icon fas fa-th"></i><p>Survei</p></a>
+                    <a href="" class="nav-link"><i class="nav-icon fas fa-th"></i><p>Beranda</p></a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="" class="nav-link"><i class="nav-icon fas fa-th"></i><p>Indikator</p></a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="" class="nav-link"><i class="nav-icon fas fa-th"></i><p>Survey</p></a>
                 </li>
             </ul>
         </nav>

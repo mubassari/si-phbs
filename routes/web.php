@@ -44,3 +44,6 @@ Route::prefix('indikator')->name('indikator.')->group(function () {
         Route::delete('')->name('hapus');
     });
 });
+
+Route::view('ts-indikator', 'pages/indikator/index');
+Route::view('ts-survey', 'pages/survey/index');
