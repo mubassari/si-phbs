@@ -16,7 +16,13 @@ class Survei extends Model
         'pertanyaan',
     ];
 
-    protected $guarded = [];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    public $timestamps = true;
 
     /**
      * Get all of the preferensi for the Survey

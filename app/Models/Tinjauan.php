@@ -18,7 +18,13 @@ class Tinjauan extends Model
         'survei_id'
     ];
 
-    protected $guarded = [];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    public $timestamps = true;
 
     /**
      * Get the user that owns the Tinjauan

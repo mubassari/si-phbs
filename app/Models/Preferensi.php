@@ -18,7 +18,13 @@ class Preferensi extends Model
         'survey_id',
     ];
 
-    protected $guarded = [];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    public $timestamps = true;
 
     /**
      * Get the survey that owns the Preferensi

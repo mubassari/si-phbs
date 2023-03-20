@@ -29,7 +29,6 @@ class User extends Authenticatable
         'is_admin',
         'is_partisipasi',
         'survey_is_draft',
-        // 'email',
         'password',
     ];
 
@@ -42,6 +41,14 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    public $timestamps = true;
 
     /**
      * The attributes that should be cast.
