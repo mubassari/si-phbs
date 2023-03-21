@@ -41,15 +41,4 @@ Route::prefix('survey')->name('survey.')->group(function () {
     });
 });
 
-Route::prefix('indikator')->name('indikator.')->group(function () {
-    Route::get('', [IndikatorController::class, 'list'])->name('list');
-    Route::get('buat', [IndikatorController::class, 'buat'])->name('buat');
-    Route::post('')->name('simpan');
-
-    Route::prefix('{indikator}')->group(function () {
-        Route::get('', [IndikatorController::class, 'tampil'])->name('tampil');
-        Route::get('ubah', [IndikatorController::class, 'ubah'])->name('ubah');
-        Route::put('')->name('update');
-        Route::delete('')->name('hapus');
-    });
-});
+Route::resource('indikator', IndikatorController::class);

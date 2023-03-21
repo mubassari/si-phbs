@@ -2,7 +2,8 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <a href="" class="btn btn-primary mb-3">Tambah</a>
+        <a href="{{ route('indikator.create') }}" class="btn btn-primary mb-3">Tambah</a>
+        <x-events.alert-success />
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -14,35 +15,29 @@
           </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1.</td>
-            <td>Lorem ipsum dolor sit.</td>
-            <td>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil quod sit, cum placeat excepturi quos repellendus esse nam, voluptatibus deleniti aliquid rem! Voluptas labore velit ex qui ipsa provident dolore.
-            </td>
-            <td>
-                <span class="badge bg-danger">...</span>
-            </td>
-            <td class="text-center">
-                <div style="width: 110px">
-                    <a class="btn btn-sm btn-success">Edit</a>
-                    <form method="POST" class="d-inline">
-                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
+          @foreach ($list_indikator as $indikator)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $indikator->judul }}</td>
+                <td>{{ $indikator->isi }}</td>
+                <td>
+                  <div>
+                    <img style="width: 120px" src="{{ $indikator->path_foto }}" alt="{{ $indikator->foto }}">
+                  </div>
+                </td>
+                <td class="text-center">
+                    <div style="width: 110px">
+                        <a class="btn btn-sm btn-success" href="{{ route('indikator.edit', ['indikator'=>$indikator->id]) }}">Edit</a>
+                        <form method="POST" class="d-inline" action="{{ route('indikator.destroy', ['indikator'=>$indikator->id]) }}" onsubmit="return confirm('Yakin mengahpsu data ini ?')">
+                          @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+          @endforeach
         </tbody>
       </table>
-      <div class="mt-3">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-          </ul>
-      </div>
     </div>
     <!-- /.card-body -->
   </div>

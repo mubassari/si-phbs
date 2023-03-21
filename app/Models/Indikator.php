@@ -22,5 +22,10 @@ class Indikator extends Model
         'updated_at'
     ];
 
+    public function getPathFotoAttribute()
+    {
+        return asset('img/foto-indikator/' . $this->foto);
+    }
+
     public $timestamps = true;
 }

@@ -18,7 +18,8 @@ class CreateTinjauanTable extends Migration
     {
         Schema::create('tinjauan', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'user_id')->constrained('user', 'id')->onDelete("cascade");
+            // $table->foreignIdFor(User::class, 'user_id')->constrained('user', 'id')->onDelete("cascade");
+            $table->foreignId('user_id')->constrained()->onDelete("cascade");
             $table->foreignIdFor(Preferensi::class, 'preferensi_id')->constrained('preferensi', 'id')->onDelete("cascade");
             $table->foreignIdFor(Survey::class, 'survey_id')->constrained('survey', 'id')->onDelete("cascade");
             $table->timestamps();

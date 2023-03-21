@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('alamat');
             $table->string('foto_ktp');
             $table->boolean('is_admin')->default(false);
-            $table->boolean('is_partisipasi')->default(false);
-            $table->boolean('survey_is_draft')->default(false);
+            $table->boolean('status_partisipasi')->default(false);
+            $table->boolean('status_draft')->default(false);
 
             // $table->string('email')->unique();
             // $table->timestamp('email_verified_at')->nullable();

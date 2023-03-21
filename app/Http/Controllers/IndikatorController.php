@@ -4,26 +4,61 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Indikator;
+use Illuminate\Support\Facades\File;
 
 class IndikatorController extends Controller
 {
-    public function list()
+    public function index()
     {
-        return view('pages.indikator.index');
+        $list_indikator = Indikator::latest()->get();
+        return view('pages.indikator.index', compact('list_indikator'));
     }
 
-    public function buat()
+    public function create()
     {
-        return view('pages.indikator.buat');
+        return view('pages.indikator.create');
     }
 
-    public function tampil(Indikator $indikator)
+    public function store(Request $request)
     {
-        return view('pages.indikator.tampil');
+        $validated = $request->validate([
+            'judul' => 'required',
+            'isi' => 'required',
+            'foto' => 'required|image|max:4000',
+        ], ['foto.required' => 'Foto wajib dipilih.']);
+        $name_file = $request->foto->hashName();
+        $validated['foto'] = $name_file;
+        $request->foto->move('img/foto-indikator', $name_file);
+        Indikator::create($validated);
+        return redirect(route('indikator.index'))->with('alert-success', 'Penambahan data indikator berhasil disimpan.');
     }
 
-    public function ubah(Indikator $indikator)
+    public function edit(Indikator $indikator)
     {
-        return view('pages.indikator.ubah');
+        return view('pages.indikator.edit', compact('indikator'));
+    }
+
+    public function update(Request $request, Indikator $indikator)
+    {
+        $validated = $request->validate([
+            'judul' => 'required',
+            'isi' => 'required',
+            'foto' => 'sometimes|image|max:4000',
+        ]);
+        if ($request->has('foto')) {
+            File::delete(public_path("img/foto-indikator/$indikator->foto"));
+            $name_file = $request->foto->hashName();
+            $validated['foto'] = $name_file;
+            $request->foto->move('img/foto-indikator', $name_file);
+        }
+        $indikator->update($validated);
+        return redirect(route('indikator.index'))->with('alert-success', 'Perubahan data indikator berhasil disimpan.');
+    }
+
+    public function destroy(Indikator $indikator)
+    {
+        File::delete(public_path("img/foto-indikator/$indikator->foto"));
+        $indikator->delete();
+        return redirect(route('indikator.index'))->with('alert-success', 'Data indikator berhasil dihapus.');
     }
 }
