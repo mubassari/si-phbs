@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SurveyRequest;
 use App\Models\Preferensi;
-use Illuminate\Http\Request;
 use App\Models\Survey;
 
 class SurveyController extends Controller
@@ -19,13 +19,9 @@ class SurveyController extends Controller
         return view('pages.survey.create');
     }
 
-    public function store(Request $request)
+    public function store(SurveyRequest $request)
     {
-        $validated = $request->validate([
-            'pertanyaan' => 'required',
-            'jawaban.*' => 'required',
-            'nilai.*' => 'required',
-        ]);
+        $validated = $request->validated();
         $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
         for ($i = 0; $i < 3; $i++) {
             Preferensi::create([
@@ -34,7 +30,7 @@ class SurveyController extends Controller
                 'nilai' => $validated['nilai'][$i]
             ]);
         }
-        return redirect(route('survey.index'))->with('alert-success', 'Penambahan data survey berhasil disimpan.');
+        return redirect(route('survey.index'))->with('success', 'Penambahan data survey berhasil disimpan.');
     }
 
     public function edit(Survey $survey)
@@ -44,13 +40,9 @@ class SurveyController extends Controller
         return view('pages.survey.edit', compact('survey', 'arr_jawaban', 'arr_nilai'));
     }
 
-    public function update(Request $request, Survey $survey)
+    public function update(SurveyRequest $request, Survey $survey)
     {
-        $validated = $request->validate([
-            'pertanyaan' => 'required',
-            'jawaban.*' => 'required',
-            'nilai.*' => 'required',
-        ]);
+        $validated = $request->validated();
         $survey->update(['pertanyaan' => $validated['pertanyaan']]);
         Preferensi::where('survey_id', $survey->id)->delete();
         for ($i = 0; $i < 3; $i++) {
@@ -60,12 +52,12 @@ class SurveyController extends Controller
                 'nilai' => $validated['nilai'][$i]
             ]);
         }
-        return redirect(route('survey.index'))->with('alert-success', 'Perubahan data survey berhasil disimpan.');
+        return redirect(route('survey.index'))->with('success', 'Perubahan data survey berhasil disimpan.');
     }
 
     public function destroy(Survey $survey)
     {
         $survey->delete();
-        return redirect(route('survey.index'))->with('alert-success', 'Data survey berhasil dihapus.');
+        return redirect(route('survey.index'))->with('success', 'Data survey berhasil dihapus.');
     }
 }
