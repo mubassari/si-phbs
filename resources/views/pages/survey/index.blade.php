@@ -2,7 +2,8 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <a href="" class="btn btn-primary mb-3">Tambah</a>
+        <a href="{{ route('survey.create') }}" class="btn btn-primary mb-3">Tambah</a>
+        <x-events.alert-success />
       <table class="table table-bordered">
         <thead>
             <tr>
@@ -14,37 +15,34 @@
             </tr>
         </thead>
         <tbody>
-        <tr>
-            <th rowspan="3" scope="row" class="text-center">1</th>
-            <td rowspan="3"> Lorem ipsum dolor sit amet.?</td>
-        </tr>
-        <tr>
-            <td>Jawaban 1</td>
-            <td>70</td>
-            <td rowspan="2" class="text-center">
-                <div style="width: 110px">
-                    <a class="btn btn-sm btn-success">Edit</a>
-                    <form method="POST" class="d-inline">
-                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Jawaban 2</td>
-            <td>80</td>
-        </tr>
+            @foreach ($list_survey as $key_x => $survey)
+                <tr>
+                    <th rowspan="{{ $survey->preferensi_count + 1 }}" scope="row" class="text-center">{{ $loop->iteration }}</th>
+                    <td rowspan="{{ $survey->preferensi_count + 1 }}">{{ $survey->pertanyaan }}</td>
+                </tr>
+                @foreach ($survey->preferensi as $key_y => $preferensi)
+                    <tr>
+                        <td>{{ $preferensi->jawaban }}</td>
+                        <td>{{ $preferensi->nilai }}</td>
+                        @if ($survey->id == $preferensi->survey_id)
+                            <td  rowspan="{{ $survey->preferensi_count + 1 }}" class="text-center">
+                                <div style="width: 110px">
+                                    <a class="btn btn-sm btn-success" href="{{ route('survey.edit', ['survey'=>$survey->id]) }}">Edit</a>
+                                    <form method="POST" class="d-inline" action="{{ route('survey.destroy', ['survey'=>$survey->id]) }}" onsubmit="return confirm('Yakin menghapus data ini ?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
+                        @endif
+                        @php
+                            $survey->id++
+                        @endphp
+                    </tr>
+                @endforeach
+            @endforeach
         </tbody>
-      </table>
-      <div class="mt-3">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-          </ul>
-      </div>
+    </table>
     </div>
     <!-- /.card-body -->
   </div>
