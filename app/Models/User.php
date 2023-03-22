@@ -27,8 +27,8 @@ class User extends Authenticatable
         'alamat',
         'foto_ktp',
         'is_admin',
-        'is_partisipasi',
-        'survey_is_draft',
+        'status_partisipasi',
+        'status_draft',
         'password',
     ];
 
@@ -67,5 +67,20 @@ class User extends Authenticatable
     public function survei(): BelongsToMany
     {
         return $this->belongsToMany(Survei::class, 'tinjauan');
+    }
+
+    public function getPathFotoKtpAttribute()
+    {
+        return asset('img/foto-ktp/' . $this->foto_ktp);
+    }
+    public function getStatusPartisipasiAttribute($value)
+    {
+        $icon = $value ? 'fa-check' : 'fa-exclamation-circle';
+        return "<i class='icon-copy fa $icon'></i>";
+    }
+    public function getStatusDraftAttribute($value)
+    {
+        $icon = $value ? 'fa-check' : 'fa-exclamation-circle';
+        return "<i class='icon-copy fa $icon'></i>";
     }
 }

@@ -25,7 +25,7 @@ class IndikatorController extends Controller
             'judul' => 'required',
             'isi' => 'required',
             'foto' => 'required|image|max:4000',
-        ], ['foto.required' => 'Foto wajib dipilih.']);
+        ], ['foto.required' => 'Foto indikator wajib diupload.']);
         $name_file = $request->foto->hashName();
         $validated['foto'] = $name_file;
         $request->foto->move('img/foto-indikator', $name_file);

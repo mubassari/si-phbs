@@ -28,7 +28,7 @@
                 <td class="text-center">
                     <div style="width: 110px">
                         <a class="btn btn-sm btn-success" href="{{ route('indikator.edit', ['indikator'=>$indikator->id]) }}">Edit</a>
-                        <form method="POST" class="d-inline" action="{{ route('indikator.destroy', ['indikator'=>$indikator->id]) }}" onsubmit="return confirm('Yakin mengahpsu data ini ?')">
+                        <form method="POST" class="d-inline" action="{{ route('indikator.destroy', ['indikator'=>$indikator->id]) }}" onsubmit="return confirm('Yakin menghapus data ini ?')">
                           @csrf @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                         </form>

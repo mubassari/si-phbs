@@ -8,20 +8,6 @@ use App\Http\Controllers\UserController;
 
 Route::get('', [MainController::class, 'beranda'])->name('beranda');
 
-Route::prefix('pengguna')->name('pengguna.')->group(function () {
-    Route::get('', [UserController::class, 'list'])->name('list');
-    Route::get('daftar', [UserController::class, 'daftar'])->name('daftar');
-    Route::get('masuk', [UserController::class, 'masuk'])->name('masuk');
-    Route::post('keluar')->name('keluar');
-
-    Route::prefix('{user}')->group(function () {
-        Route::get('', [UserController::class, 'tampil'])->name('tampil');
-        Route::get('ubah', [UserController::class, 'ubah'])->name('ubah');
-        Route::put('')->name('update');
-        Route::delete('')->name('hapus');
-    });
-});
-
 Route::prefix('survey')->name('survey.')->group(function () {
     Route::get('', [SurveyController::class, 'isi'])->name('isi');
     Route::post('')->name('kirim');
@@ -42,3 +28,5 @@ Route::prefix('survey')->name('survey.')->group(function () {
 });
 
 Route::resource('indikator', IndikatorController::class);
+Route::resource('user', UserController::class);
+Route::post('/user/{user}/reset-status', [UserController::class, 'resetStatus'])->name('user.reset-status');
