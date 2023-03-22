@@ -26,7 +26,7 @@ class IndikatorController extends Controller
         $validated['foto'] = $name_file;
         $request->foto->move('img/foto-indikator', $name_file);
         Indikator::create($validated);
-        return redirect(route('indikator.index'))->with('alert-success', 'Penambahan data indikator berhasil disimpan.');
+        return redirect(route('indikator.index'))->with('success', 'Penambahan data indikator berhasil disimpan.');
     }
 
     public function edit(Indikator $indikator)
@@ -44,13 +44,13 @@ class IndikatorController extends Controller
             $request->foto->move('img/foto-indikator', $name_file);
         }
         $indikator->update($validated);
-        return redirect(route('indikator.index'))->with('alert-success', 'Perubahan data indikator berhasil disimpan.');
+        return redirect(route('indikator.index'))->with('success', 'Perubahan data indikator berhasil disimpan.');
     }
 
     public function destroy(Indikator $indikator)
     {
         File::delete(public_path("img/foto-indikator/$indikator->foto"));
         $indikator->delete();
-        return redirect(route('indikator.index'))->with('alert-success', 'Data indikator berhasil dihapus.');
+        return redirect(route('indikator.index'))->with('success', 'Data indikator berhasil dihapus.');
     }
 }

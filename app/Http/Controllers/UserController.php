@@ -27,7 +27,7 @@ class UserController extends Controller
         $validated['password'] = bcrypt(substr($request->telpon, -4, 4));
         $request->foto_ktp->move('img/foto-ktp', $name_file);
         User::create($validated);
-        return redirect(route('user.index'))->with('alert-success', 'Penambahan data user berhasil disimpan.');
+        return redirect(route('user.index'))->with('success', 'Penambahan data user berhasil disimpan.');
     }
 
     public function edit(User $user)
@@ -45,14 +45,14 @@ class UserController extends Controller
             $request->foto_ktp->move('img/foto-ktp', $name_file);
         }
         $user->update($validated);
-        return redirect(route('user.index'))->with('alert-success', 'Perubahan data user berhasil disimpan.');
+        return redirect(route('user.index'))->with('success', 'Perubahan data user berhasil disimpan.');
     }
 
     public function destroy(User $user)
     {
         File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
         $user->delete();
-        return redirect(route('user.index'))->with('alert-success', 'Data user berhasil dihapus.');
+        return redirect(route('user.index'))->with('success', 'Data user berhasil dihapus.');
     }
 
     public function resetStatus(User $user)
@@ -61,6 +61,6 @@ class UserController extends Controller
             'status_partisipasi' => false,
             'status_draft' => false,
         ]);
-        return redirect(route('user.index'))->with('alert-success', 'Status user berhasil direset.');
+        return redirect(route('user.index'))->with('success', 'Status user berhasil direset.');
     }
 }

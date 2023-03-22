@@ -6,11 +6,10 @@
     <label for="bio_profil" class="col-sm-4 col-form-label">Foto KTP</label>
     <div class="col-sm-8">
         <div class="custom-file @error('foto_ktp') has-error @enderror">
-            <input type="file" name="foto_ktp" class="custom-file-input" id="foto_ktp">
+            <input type="file" name="foto_ktp" class="custom-file-input" id="foto_ktp"
+            accept="image/*">
             <label class="custom-file-label">Pilih Foto</label>
-            @error('foto_ktp')
-                <div style="font-size: 80%;color: #dc3545;" class="text-error mt-1">{{ $message }}</div>
-            @enderror
+            <x-events.error-message error="foto_ktp" />
         </div>
     </div>
 </div>
@@ -25,7 +24,7 @@
     <style>
         .has-error {
             padding-bottom: 10mm;
-            border: .5px solid #dc3545; 
+            border: .5px solid #dc3545;
             border-radius: 5px
         }
     </style>

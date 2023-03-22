@@ -12,9 +12,7 @@
         <div class="custom-file @error('foto') has-error @enderror">
             <input type="file" name="foto" class="custom-file-input" id="foto">
             <label class="custom-file-label">Pilih Foto</label>
-            @error('foto')
-                <div style="font-size: 80%;color: #dc3545;" class="text-error mt-1">{{ $message }}</div>
-            @enderror
+            <x-events.error-message error="foto" />
         </div>
     </div>
 </div>
@@ -29,7 +27,7 @@
     <style>
         .has-error {
             padding-bottom: 10mm;
-            border: .5px solid #dc3545; 
+            border: .5px solid #dc3545;
             border-radius: 5px
         }
     </style>
