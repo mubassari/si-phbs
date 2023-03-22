@@ -21,13 +21,19 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $validated = $request->validated();
-        $name_file = $request->foto_ktp->hashName();
-        $validated['foto_ktp'] = $name_file;
-        $validated['password'] = bcrypt(substr($request->telpon, -4, 4));
-        $request->foto_ktp->move('img/foto-ktp', $name_file);
-        User::create($validated);
-        return redirect(route('user.index'))->with('success', 'Penambahan data user berhasil disimpan.');
+        try {
+            $validated = $request->validated();
+            $name_file = $request->foto_ktp->hashName();
+            $validated['foto_ktp'] = $name_file;
+            $validated['password'] = bcrypt(substr($request->telpon, -4, 4));
+            User::create($validated);
+
+            $request->foto_ktp->move('img/foto-ktp', $name_file);
+
+            return redirect()->route('user.index')->with('success', 'Penambahan data user berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+        }
     }
 
     public function edit(User $user)
@@ -37,22 +43,34 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        $validated = $request->validated();
-        if ($request->has('foto_ktp')) {
-            File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-            $name_file = $request->foto_ktp->hashName();
-            $validated['foto_ktp'] = $name_file;
-            $request->foto_ktp->move('img/foto-ktp', $name_file);
+        try {
+            $validated = $request->validated();
+
+            if ($request->has('foto_ktp')) {
+                File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
+                $name_file = $request->foto_ktp->hashName();
+                $validated['foto_ktp'] = $name_file;
+                $request->foto_ktp->move('img/foto-ktp', $name_file);
+            }
+
+            $user->update($validated);
+
+            return redirect()->route('user.index')->with('success', 'Perubahan data user berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
-        $user->update($validated);
-        return redirect(route('user.index'))->with('success', 'Perubahan data user berhasil disimpan.');
     }
 
     public function destroy(User $user)
     {
-        File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-        $user->delete();
-        return redirect(route('user.index'))->with('success', 'Data user berhasil dihapus.');
+        try {
+            $user->delete();
+            File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
+
+            return redirect()->route('user.index')->with('success', 'Data user berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.']);
+        }
     }
 
     public function resetStatus(User $user)
