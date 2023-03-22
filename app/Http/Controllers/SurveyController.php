@@ -2,34 +2,70 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Preferensi;
 use Illuminate\Http\Request;
 use App\Models\Survey;
-use App\Models\User;
 
 class SurveyController extends Controller
 {
-    public function list()
+    public function index()
     {
-        return view('pages.survey.index');
+        $list_survey = Survey::withCount('preferensi')->latest()->get();
+        return view('pages.survey.index', compact('list_survey'));
     }
 
-    public function buat()
+    public function create()
     {
-        return view('pages.survey.buat');
+        return view('pages.survey.create');
     }
 
-    public function isi()
+    public function store(Request $request)
     {
-        return view('pages.survey.isi');
+        $validated = $request->validate([
+            'pertanyaan' => 'required',
+            'jawaban.*' => 'required',
+            'nilai.*' => 'required',
+        ]);
+        $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
+        for ($i = 0; $i < 3; $i++) {
+            Preferensi::create([
+                'survey_id' => $survey->id,
+                'jawaban' => $validated['jawaban'][$i],
+                'nilai' => $validated['nilai'][$i]
+            ]);
+        }
+        return redirect(route('survey.index'))->with('alert-success', 'Penambahan data survey berhasil disimpan.');
     }
 
-    public function ubah(Survey $survey)
+    public function edit(Survey $survey)
     {
-        return view('pages.survey.ubah');
+        $arr_jawaban = $survey->preferensi->pluck('jawaban')->toArray();
+        $arr_nilai = $survey->preferensi->pluck('nilai')->toArray();
+        return view('pages.survey.edit', compact('survey', 'arr_jawaban', 'arr_nilai'));
     }
 
-    public function detail(User $user)
+    public function update(Request $request, Survey $survey)
     {
-        return view('pages.survey.detail');
+        $validated = $request->validate([
+            'pertanyaan' => 'required',
+            'jawaban.*' => 'required',
+            'nilai.*' => 'required',
+        ]);
+        $survey->update(['pertanyaan' => $validated['pertanyaan']]);
+        Preferensi::where('survey_id', $survey->id)->delete();
+        for ($i = 0; $i < 3; $i++) {
+            Preferensi::create([
+                'survey_id' => $survey->id,
+                'jawaban' => $validated['jawaban'][$i],
+                'nilai' => $validated['nilai'][$i]
+            ]);
+        }
+        return redirect(route('survey.index'))->with('alert-success', 'Perubahan data survey berhasil disimpan.');
+    }
+
+    public function destroy(Survey $survey)
+    {
+        $survey->delete();
+        return redirect(route('survey.index'))->with('alert-success', 'Data survey berhasil dihapus.');
     }
 }
