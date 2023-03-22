@@ -3,28 +3,26 @@
 <div class="form-group row">
     <label for="Preferensi" class="col-sm-4 col-form-label">Preferensi</label>
     <div class="col-sm-8">
-        @for ($i = 0; $i < 3; $i++)
+        @foreach ($preferensi ?? [1, 2, 3] as $key => $jawaban)
+            <input type="hidden" name="id[]" value="{{ $jawaban->id ?? $jawaban }}">
             <div class="row mb-4">
                 <div class="col-8">
-                    <input name="jawaban[]" class="form-control @error('jawaban.' . $i) is-invalid @enderror"
-                        value="{{ old('jawaban.' . $i, $arr_jawaban[$i] ?? '') }}">
-                    <x-events.error-message error="{{ 'jawaban.' . $i }}" />
+                    <input name="jawaban[]" class="form-control @error('jawaban.' . $key) is-invalid @enderror"
+                        value="{{ old('jawaban.' . $key, $jawaban->jawaban ?? '') }}">
+                    <x-events.error-message error="{{ 'jawaban.' . $key }}" />
                 </div>
                 <div class="col-4">
-                    <select name="nilai[]" class="form-control @error('nilai.' . $i) is-invalid @enderror">
-                        <option {{ old('nilai.' . $i, $arr_nilai[$i] ?? '') == 0 ? 'selected' : '' }} value="0">
-                            Nilai</option>
-                        <option {{ old('nilai.' . $i, $arr_nilai[$i] ?? '') == 70 ? 'selected' : '' }} value="70">70
-                        </option>
-                        <option {{ old('nilai.' . $i, $arr_nilai[$i] ?? '') == 80 ? 'selected' : '' }} value="80">80
-                        </option>
-                        <option {{ old('nilai.' . $i, $arr_nilai[$i] ?? '') == 90 ? 'selected' : '' }} value="90">90
-                        </option>
+                    <select name="nilai[]" class="form-control @error('nilai.' . $key) is-invalid @enderror">
+                        @foreach ([0, 70, 80, 90] as $nilai)
+                            <option {{ old('nilai.' . $key, $jawaban->nilai ?? '') == $nilai ? 'selected' : '' }}
+                                value="{{ $nilai }}">
+                                {{ $nilai == 0 ? 'Nilai' : $nilai }}</option>
+                        @endforeach
                     </select>
-                    <x-events.error-message error="{{ 'nilai.' . $i }}" />
+                    <x-events.error-message error="{{ 'nilai.' . $key }}" />
                 </div>
             </div>
-        @endfor
+        @endforeach
     </div>
 </div>
 

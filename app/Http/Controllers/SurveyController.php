@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\SurveyRequest;
 use App\Models\Preferensi;
 use App\Models\Survey;
@@ -21,10 +22,11 @@ class SurveyController extends Controller
 
     public function store(SurveyRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
             $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
-            
+
             for ($i = 0; $i < 3; $i++) {
                 Preferensi::create([
                     'survey_id' => $survey->id,
@@ -33,36 +35,43 @@ class SurveyController extends Controller
                 ]);
             }
 
+            DB::commit();
+
             return redirect()->route('survey.index')->with('success', 'Penambahan data survey berhasil disimpan.');
         } catch (\Exception $e) {
+            DB::rollback();
+
             return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
     }
 
     public function edit(Survey $survey)
     {
-        $arr_jawaban = $survey->preferensi->pluck('jawaban')->toArray();
-        $arr_nilai = $survey->preferensi->pluck('nilai')->toArray();
-        return view('pages.survey.edit', compact('survey', 'arr_jawaban', 'arr_nilai'));
+        $preferensi = $survey->preferensi;
+        return view('pages.survey.edit', compact('survey', 'preferensi'));
     }
 
     public function update(SurveyRequest $request, Survey $survey)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
             $survey->update(['pertanyaan' => $validated['pertanyaan']]);
 
-            Preferensi::where('survey_id', $survey->id)->delete();
-            for ($i = 0; $i < 3; $i++) {
-                Preferensi::create([
-                    'survey_id' => $survey->id,
-                    'jawaban' => $validated['jawaban'][$i],
-                    'nilai' => $validated['nilai'][$i]
+            foreach ($request['id'] as $key => $preferensi_id) {
+                $preferensi = Preferensi::findOrFail($preferensi_id);
+                $preferensi->update([
+                    'jawaban' => $validated['jawaban'][$key],
+                    'nilai' => $validated['nilai'][$key]
                 ]);
             }
 
+            DB::commit();
+
             return redirect()->route('survey.index')->with('success', 'Perubahan data survey berhasil disimpan.');
         } catch (\Exception $e) {
+            DB::rollback();
+
             return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
     }
