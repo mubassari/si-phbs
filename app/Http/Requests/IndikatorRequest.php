@@ -23,10 +23,20 @@ class IndikatorRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'judul' => 'required|string',
             'isi'   => 'required|string',
-            'foto'  => 'required|image|max:4000',
+            'foto'  => 'required|image|mimes:jpeg,png,jpg|max:4096',
         ];
+
+        // Check if the request is for updating an existing record
+        if ($this->getMethod() == 'PUT' || $this->getMethod() == 'PATCH') {
+            // Skip validation for foto if input is empty
+            if (!$this->hasFile('foto')) {
+                unset($rules['foto']);
+            }
+        }
+
+        return $rules;
     }
 }
