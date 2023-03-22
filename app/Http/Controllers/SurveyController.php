@@ -21,16 +21,22 @@ class SurveyController extends Controller
 
     public function store(SurveyRequest $request)
     {
-        $validated = $request->validated();
-        $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
-        for ($i = 0; $i < 3; $i++) {
-            Preferensi::create([
-                'survey_id' => $survey->id,
-                'jawaban' => $validated['jawaban'][$i],
-                'nilai' => $validated['nilai'][$i]
-            ]);
+        try {
+            $validated = $request->validated();
+            $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
+            
+            for ($i = 0; $i < 3; $i++) {
+                Preferensi::create([
+                    'survey_id' => $survey->id,
+                    'jawaban' => $validated['jawaban'][$i],
+                    'nilai' => $validated['nilai'][$i]
+                ]);
+            }
+
+            return redirect()->route('survey.index')->with('success', 'Penambahan data survey berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
-        return redirect(route('survey.index'))->with('success', 'Penambahan data survey berhasil disimpan.');
     }
 
     public function edit(Survey $survey)
@@ -42,22 +48,32 @@ class SurveyController extends Controller
 
     public function update(SurveyRequest $request, Survey $survey)
     {
-        $validated = $request->validated();
-        $survey->update(['pertanyaan' => $validated['pertanyaan']]);
-        Preferensi::where('survey_id', $survey->id)->delete();
-        for ($i = 0; $i < 3; $i++) {
-            Preferensi::create([
-                'survey_id' => $survey->id,
-                'jawaban' => $validated['jawaban'][$i],
-                'nilai' => $validated['nilai'][$i]
-            ]);
+        try {
+            $validated = $request->validated();
+            $survey->update(['pertanyaan' => $validated['pertanyaan']]);
+
+            Preferensi::where('survey_id', $survey->id)->delete();
+            for ($i = 0; $i < 3; $i++) {
+                Preferensi::create([
+                    'survey_id' => $survey->id,
+                    'jawaban' => $validated['jawaban'][$i],
+                    'nilai' => $validated['nilai'][$i]
+                ]);
+            }
+
+            return redirect()->route('survey.index')->with('success', 'Perubahan data survey berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
-        return redirect(route('survey.index'))->with('success', 'Perubahan data survey berhasil disimpan.');
     }
 
     public function destroy(Survey $survey)
     {
-        $survey->delete();
-        return redirect(route('survey.index'))->with('success', 'Data survey berhasil dihapus.');
+        try {
+            $survey->delete();
+            return redirect(route('survey.index'))->with('success', 'Data survey berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+        }
     }
 }
