@@ -21,12 +21,17 @@ class IndikatorController extends Controller
 
     public function store(IndikatorRequest $request)
     {
-        $validated = $request->validated();
-        $name_file = $request->foto->hashName();
-        $validated['foto'] = $name_file;
-        $request->foto->move('img/foto-indikator', $name_file);
-        Indikator::create($validated);
-        return redirect(route('indikator.index'))->with('alert-success', 'Penambahan data indikator berhasil disimpan.');
+        try {
+            $validated = $request->validated();
+            $name_file = $request->foto->hashName();
+            Indikator::create($validated);
+
+            $request->foto->move('img/foto-indikator', $name_file);
+
+            return redirect()->route('indikator.index')->with('success', 'Penambahan data indikator berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+        }
     }
 
     public function edit(Indikator $indikator)
@@ -36,21 +41,32 @@ class IndikatorController extends Controller
 
     public function update(IndikatorRequest $request, Indikator $indikator)
     {
-        $validated = $request->validated();
-        if ($request->has('foto')) {
-            File::delete(public_path("img/foto-indikator/$indikator->foto"));
-            $name_file = $request->foto->hashName();
-            $validated['foto'] = $name_file;
-            $request->foto->move('img/foto-indikator', $name_file);
+        try{
+            $validated = $request->validated();
+
+            if ($request->has('foto')) {
+                File::delete(public_path("img/foto-indikator/$indikator->foto"));
+                $name_file = $request->foto->hashName();
+                $request->foto->move('img/foto-indikator', $name_file);
+            }
+
+            $indikator->update($validated);
+            
+            return redirect()->route('indikator.index')->with('success', 'Perubahan data indikator berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
-        $indikator->update($validated);
-        return redirect(route('indikator.index'))->with('alert-success', 'Perubahan data indikator berhasil disimpan.');
     }
 
     public function destroy(Indikator $indikator)
     {
-        File::delete(public_path("img/foto-indikator/$indikator->foto"));
-        $indikator->delete();
-        return redirect(route('indikator.index'))->with('alert-success', 'Data indikator berhasil dihapus.');
+        try {
+            $indikator->delete();
+            File::delete(public_path("img/foto-indikator/$indikator->foto"));
+
+            return redirect()->route('indikator.index')->with('success', 'Data indikator berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.']);
+        }
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['breadcrumb' => 'Edit Suervey'])
+@extends('layouts.app', ['breadcrumb' => 'Edit Survey'])
 @section('content')
 <div class="row my-4 w-100">
     <div class="col-12 col-sm-8 mx-auto">
