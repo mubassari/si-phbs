@@ -25,7 +25,7 @@ class UserController extends Controller
             $validated = $request->validated();
             $name_file = $request->foto_ktp->hashName();
             $validated['foto_ktp'] = $name_file;
-            $validated['password'] = bcrypt(substr($request->telpon, -4, 4));
+            $validated['password'] = bcrypt($validated['password']);
             User::create($validated);
 
             $request->foto_ktp->move('img/foto-ktp', $name_file);
@@ -45,16 +45,13 @@ class UserController extends Controller
     {
         try {
             $validated = $request->validated();
-
             if ($request->has('foto_ktp')) {
                 File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
                 $name_file = $request->foto_ktp->hashName();
                 $validated['foto_ktp'] = $name_file;
                 $request->foto_ktp->move('img/foto-ktp', $name_file);
             }
-
             $user->update($validated);
-
             return redirect()->route('user.index')->with('success', 'Perubahan data user berhasil disimpan.');
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
