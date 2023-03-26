@@ -29,8 +29,8 @@ class UserRequest extends FormRequest
                 'required',
                 'numeric',
                 'starts_with:08,62',
-                'regex:/^(62|08)[2-9][0-9]{7,10}$/',
-                'unique:users,telpon,'.($this->user ? $this->user->id : NULL)
+                'regex:/^(62|08)[0-9]{9,13}$/',
+                'unique:users,telpon,' . ($this->user ? $this->user->id : NULL)
             ],
             'alamat'   => 'required|string',
             'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
