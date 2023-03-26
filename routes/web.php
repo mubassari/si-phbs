@@ -13,7 +13,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('indikator', IndikatorController::class);
     Route::resource('survey', SurveyController::class);
-    Route::post('/user/{user}/reset-status', [UserController::class, 'resetStatus'])->name('user.reset-status');
+    Route::get('/user/{user}/edit-status', [UserController::class, 'editStatus'])->name('user.edit-status');
+    Route::post('/user/{user}/update-status', [UserController::class, 'updateStatus'])->name('user.update-status');
 
     Route::get('/lihat-profil', [Authentication::class, 'viewFormProfile'])->name('profile');
     Route::patch('/profil/{user}', [Authentication::class, 'updateProfil'])->name('profile.update');

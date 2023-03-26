@@ -34,10 +34,7 @@
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                       </form>
-                      <form method="POST" action="{{ route('user.reset-status', ['user' => $user->id]) }}" class="mt-3" onsubmit="return confirm('Yakin mereset data status ini ?')">
-                        @csrf
-                          <button type="submit" class="btn btn-sm btn-primary">Reset Status</button>
-                      </form>
+                      <a class="btn btn-sm btn-dark mt-1" href="{{ route('user.edit-status', ['user' => $user->id]) }}">Edit Status</a>
                     </div>
                 </td>
             </tr>

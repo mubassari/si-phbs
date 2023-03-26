@@ -70,12 +70,12 @@ class UserController extends Controller
         }
     }
 
-    public function resetStatus(User $user)
+    public function editStatus(User $user)
     {
-        $user->update([
-            'status_partisipasi' => false,
-            'status_draft' => false,
-        ]);
-        return redirect(route('user.index'))->with('success', 'Status user berhasil direset.');
+        return view('pages.user.status', compact('user'));
+    }
+    public function updateStatus(User $user)
+    {
+        dd('Here..!');
     }
 }
