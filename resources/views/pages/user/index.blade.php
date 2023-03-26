@@ -25,8 +25,8 @@
                 <td>{{ $user->telpon }}</td>
                 <td>{{ $user->alamat }}</td>
                 <td><img class="img" width="70px" src="{{ $user->path_foto_ktp }}" alt="{{ $user->foto }}"></td>
-                <td class="text-center">{!! $user->status_partisipasi !!}</td>
-                <td class="text-center">{!! $user->status_draft !!}</td>
+                <td class="text-center">{!! $user->icon_status_partisipasi !!}</td>
+                <td class="text-center">{!! $user->icon_status_draft !!}</td>
                 <td class="text-center">
                     <div style="width: 110px">
                       <a class="btn btn-sm btn-success" href="{{ route('user.edit', ['user'=>$user->id]) }}">Edit</a>
