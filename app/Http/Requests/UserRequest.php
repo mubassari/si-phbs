@@ -23,7 +23,9 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        $password_rule = $this->user ? 'sometimes' : 'required';
+        $foto_ktp_rule = $this->user ? 'sometimes' : 'required';
+        return [
             'nama'     => 'required|string',
             'telpon'   => [
                 'required',
@@ -32,18 +34,17 @@ class UserRequest extends FormRequest
                 'regex:/^(62|08)[0-9]{9,13}$/',
                 'unique:users,telpon,' . ($this->user ? $this->user->id : NULL)
             ],
+            'password' => "$password_rule|confirmed|min:4",
             'alamat'   => 'required|string',
-            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_ktp' => "$foto_ktp_rule|image|mimes:jpeg,png,jpg|max:2048",
         ];
+    }
 
-        // Check if the request is for updating an existing record
-        if ($this->getMethod() == 'PUT' || $this->getMethod() == 'PATCH') {
-            // Skip validation for foto_ktp if input is empty
-            if (!$this->hasFile('foto_ktp')) {
-                unset($rules['foto_ktp']);
-            }
-        }
-
-        return $rules;
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'password' => $this->password ?? substr($this->telpon, -4, 4),
+            'password_confirmation' => $this->password ?? substr($this->telpon, -4, 4),
+        ]);
     }
 }
