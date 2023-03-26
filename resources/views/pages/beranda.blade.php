@@ -1,4 +1,4 @@
-@extends('layouts.app', ['breadcrumb' => 'List Members'])
+@extends('layouts.app', ['breadcrumb' => 'Panduan PHBS'])
 @section('content')
     <div class="container">
         <div class="row row-cols-1 row-cols-md-3">

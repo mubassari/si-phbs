@@ -10,17 +10,17 @@
     <ul class="navbar-nav ml-auto">
       @auth
         <li class="nav-item">
-          <button type="button" class="btn btn-default">Keluar</button>
-          <form action="#" class="d-none" id="form-keluar" method="POST">
+          <form action="{{ route('logout') }}" id="form-logout" method="POST">
             @csrf
+            <button type="submit" class="btn btn-default">Keluar</button>
           </form>
         </li>
       @else
         <li class="nav-item">
-            <a href="#" class="nav-link">Masuk</a>
+            <a href="{{ route('login') }}" class="nav-link">Masuk</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">Daftar</a>
+            <a href="{{ route('register') }}" class="nav-link">Daftar</a>
         </li>
       @endauth
     </ul>

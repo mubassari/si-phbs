@@ -22,9 +22,8 @@ class CreateUsersTable extends Migration
             $table->boolean('is_admin')->default(false);
             $table->boolean('status_partisipasi')->default(false);
             $table->boolean('status_draft')->default(false);
-
-            // $table->string('email')->unique();
-            // $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('status_verifikasi')->default(false);
+            $table->string('catatan_admin')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

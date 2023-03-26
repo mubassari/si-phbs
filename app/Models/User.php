@@ -73,14 +73,19 @@ class User extends Authenticatable
     {
         return asset('img/foto-ktp/' . $this->foto_ktp);
     }
-    public function getStatusPartisipasiAttribute($value)
+    public function getIconStatusPartisipasiAttribute()
     {
-        $icon = $value ? 'fa-check' : 'fa-exclamation-circle';
+        $icon = $this->status_partisipasi ? 'fa-check' : 'fa-exclamation-circle';
         return "<i class='icon-copy fa $icon'></i>";
     }
-    public function getStatusDraftAttribute($value)
+    public function getIconStatusDraftAttribute($value)
     {
-        $icon = $value ? 'fa-check' : 'fa-exclamation-circle';
+        $icon = $this->status_draft ? 'fa-check' : 'fa-exclamation-circle';
+        return "<i class='icon-copy fa $icon'></i>";
+    }
+    public function getIconStatusVerifikasiAttribute()
+    {
+        $icon = $this->status_verifikasi ? 'fa-check-circle' : 'fa-info-circle';
         return "<i class='icon-copy fa $icon'></i>";
     }
 }

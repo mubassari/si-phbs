@@ -10,32 +10,90 @@
     <div class="sidebar">
         @auth
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img style="width: 30px; height: 30px; object-fit: cover; object-position: center top" src=""
-                        class="img-circle elevation-2" alt="User Image">
-                </div>
                 <div class="info">
-                    <a href="#" class="d-block">Ramadhan</a>
+                    <a href="#" class="d-block">{{ auth()->user()->nama }} {!! auth()->user()->icon_status_verifikasi !!}</a>
                 </div>
             </div>
         @endauth
-        @php
-            $sidebars = collect([['title' => 'Beranda', 'uri' => route('beranda'), 'icon' => 'home'], ['title' => 'User', 'uri' => route('user.index'), 'icon' => 'user'], ['title' => 'Indikator', 'uri' => route('indikator.index'), 'icon' => 'exclamation-circle'], ['title' => 'Survey', 'uri' => route('survey.index'), 'icon' => 'poll']]);
-        @endphp
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            @foreach ($sidebars->toArray() as $sidebar)
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ route('beranda') }}" class="nav-link {{ Route::currentRouteName('beranda') == 'beranda' ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Beranda</p>
+                    </a>
+                </li>
+            </ul>
+            @auth
+            @if (auth()->user()->is_admin)
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ $sidebar['uri'] }}"
-                            class="nav-link @if (url()->current() == $sidebar['uri']) active @endif">
-                            <i class="nav-icon fas {{ 'fa-' . $sidebar['icon'] }}"></i>
-                            <p>{{ $sidebar['title'] }}</p>
+                        <a href="{{ route('user.index') }}" class="nav-link {{ Request::is('user*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>User</p>
                         </a>
                     </li>
                 </ul>
-            @endforeach
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('indikator.index') }}" class="nav-link {{ Request::is('indikator*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-industry"></i>
+                            <p>Indikator</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('survey.index') }}" class="nav-link {{ Request::is('survey*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-bullhorn"></i>
+                            <p>Survey</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="nav-icon fa fa-list-alt"></i>
+                            <p>Tinjauan</p>
+                        </a>
+                    </li>
+                </ul>
+            @endif
+
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="nav-icon fa fa-edit"></i>
+                            <p>Isi Survey</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('profile') }}" class="nav-link {{ Request::is('lihat-profil') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-circle"></i>
+                            <p>Lihat Profil</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            <i class="nav-icon fa fa-cog" ></i>
+                            <p>Kata Sandi</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" onclick="event.preventDefault(); document.getElementById('form-logout').submit();">
+                    <li class="nav-item">
+                        <a href="{{ route('logout') }}" class="nav-link">
+                            <i class="nav-icon fa fa-arrow-circle-left"></i>
+                            <p>Keluar</p>
+                        </a>
+                    </li>
+                </ul>
+            @endauth
         </nav>
     </div>
 </aside>
