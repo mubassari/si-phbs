@@ -71,7 +71,7 @@
                 </ul>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('profile') }}" class="nav-link {{ Request::is('lihat-profil') ? 'active' : '' }}">
+                        <a href="{{ route('profile.lihat') }}" class="nav-link {{ Request::is('lihat-profil') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-circle"></i>
                             <p>Lihat Profil</p>
                         </a>

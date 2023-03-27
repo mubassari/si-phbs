@@ -34,7 +34,7 @@
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                       </form>
-                      <a class="btn btn-sm btn-dark mt-1" href="{{ route('user.edit-status', ['user' => $user->id]) }}">Edit Status</a>
+                      <a class="btn btn-sm btn-dark mt-1" href="{{ route('user.status.edit', ['user' => $user->id]) }}">Edit Status</a>
                     </div>
                 </td>
             </tr>

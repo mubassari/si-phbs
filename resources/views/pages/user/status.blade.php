@@ -9,7 +9,7 @@
                 <a href="{{ route('user.index') }}" class="btn btn-default text-dark">List User</a>
             </div>
         </div>
-            <form class="form-horizontal" id="form-member" method="POST" action="{{ route('user.update-status', ['user' => $user->id]) }}">
+            <form class="form-horizontal" id="form-member" method="POST" action="{{ route('user.status.update', ['user' => $user->id]) }}">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">

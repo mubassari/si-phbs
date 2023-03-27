@@ -11,13 +11,19 @@ Route::get('', [MainController::class, 'beranda'])->name('beranda');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('user', UserController::class);
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::prefix('{user}')->name('status.')->group(function () {
+            Route::get('status', [UserController::class, 'editStatus'])->name('edit');
+            Route::post('status', [UserController::class, 'updateStatus'])->name('update');
+        });
+    });
     Route::resource('indikator', IndikatorController::class);
     Route::resource('survey', SurveyController::class);
-    Route::get('/user/{user}/edit-status', [UserController::class, 'editStatus'])->name('user.edit-status');
-    Route::post('/user/{user}/update-status', [UserController::class, 'updateStatus'])->name('user.update-status');
 
-    Route::get('/lihat-profil', [Authentication::class, 'viewFormProfile'])->name('profile');
-    Route::patch('/profil/{user}', [Authentication::class, 'updateProfil'])->name('profile.update');
+    Route::prefix('profil')->name('profile.')->group(function () {
+        Route::get('', [Authentication::class, 'viewFormProfile'])->name('lihat');
+        Route::patch('{user}', [Authentication::class, 'updateProfil'])->name('update');
+    });
     Route::post('/keluar', [Authentication::class, 'logout'])->name('logout');
 });
 
