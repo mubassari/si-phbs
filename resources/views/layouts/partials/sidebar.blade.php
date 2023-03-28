@@ -94,6 +94,24 @@
                     </li>
                 </ul>
             @endauth
+            @guest
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ route('login') }}" class="nav-link">
+                        <i class="nav-icon fa fa-arrow-circle-right"></i>
+                        <p>Masuk</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ route('register') }}" class="nav-link">
+                        <i class="nav-icon fa fa-cube"></i>
+                        <p>Daftar</p>
+                    </a>
+                </li>
+            </ul>
+            @endguest
         </nav>
     </div>
 </aside>
