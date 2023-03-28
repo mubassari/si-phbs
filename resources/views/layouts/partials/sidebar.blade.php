@@ -63,7 +63,7 @@
 
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{ route('survey.isi') }}" class="nav-link {{ Request::is('survey/isi') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-edit"></i>
                             <p>Isi Survey</p>
                         </a>
@@ -71,7 +71,7 @@
                 </ul>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('profile.lihat') }}" class="nav-link {{ Request::is('lihat-profil') ? 'active' : '' }}">
+                        <a href="{{ route('profile.lihat') }}" class="nav-link {{ Request::is('profil') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-circle"></i>
                             <p>Lihat Profil</p>
                         </a>

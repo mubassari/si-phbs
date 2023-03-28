@@ -18,7 +18,11 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     Route::resource('indikator', IndikatorController::class);
-    Route::resource('survey', SurveyController::class);
+    Route::resource('survey', SurveyController::class)->except(['show']);
+    Route::prefix('survey')->name('survey.')->group(function () {
+        Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
+        Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
+    });
 
     Route::prefix('profil')->name('profile.')->group(function () {
         Route::get('', [Authentication::class, 'viewFormProfile'])->name('lihat');
