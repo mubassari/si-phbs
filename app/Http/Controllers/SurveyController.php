@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Http\Requests\SurveyRequest;
 use App\Models\Preferensi;
 use App\Models\Survey;
+use App\Models\Tinjauan;
+use App\Models\User;
 
 class SurveyController extends Controller
 {
@@ -82,6 +85,40 @@ class SurveyController extends Controller
             $survey->delete();
             return redirect(route('survey.index'))->with('success', 'Data survey berhasil dihapus.');
         } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+        }
+    }
+
+    public function viewFormSurvey()
+    {
+        $user = auth()->user();
+        $list_survey = Survey::withCount('preferensi')->get();
+        $list_tinjauan = Tinjauan::where('user_id', $user->id)->get();
+        return view('pages.survey.isi', compact('list_survey', 'list_tinjauan', 'user'));
+    }
+
+    public function kirimSurvey(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user_id = auth()->user()->id;
+            Tinjauan::where('user_id', $user_id)->delete();
+
+            foreach ($request['jawaban'] as $survey_id => $preferensi_id) {
+                Tinjauan::create([
+                    'user_id' => $user_id,
+                    'preferensi_id' => $preferensi_id,
+                    'survey_id' => $survey_id
+                ]);
+            }
+
+            User::find($user_id)->update(['status_draft' => !$request->has('draf')]);
+
+            DB::commit();
+
+            return redirect()->route('survey.isi')->with('success', 'Survey berhasil dikirim.');
+        } catch (\Exception $e) {
+            DB::rollback();
             return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
         }
     }

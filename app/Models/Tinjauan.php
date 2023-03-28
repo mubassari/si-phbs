@@ -15,7 +15,7 @@ class Tinjauan extends Model
     protected $fillable = [
         'user_id',
         'preferensi_id',
-        'survei_id'
+        'survey_id'
     ];
 
     protected $guarded = [
