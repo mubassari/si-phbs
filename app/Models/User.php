@@ -29,6 +29,7 @@ class User extends Authenticatable
         'alamat',
         'foto_ktp',
         'is_admin',
+        'status_verifikasi',
         'status_partisipasi',
         'status_draft',
         'password',

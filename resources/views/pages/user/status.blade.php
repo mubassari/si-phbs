@@ -12,52 +12,11 @@
             <form class="form-horizontal" id="form-member" method="POST" action="{{ route('user.status.update', ['user' => $user->id]) }}">
                 @csrf
                 <div class="card-body">
-                    <div class="form-group row">
-                        <label for="" class="col-sm-4 col-form-label">Status Partisipasi</label>
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <div class="form-check mr-4">
-                                    <input class="form-check-input" type="radio" name="radio1">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-check'></i></label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio1" checked="">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-exclamation-circle'></i></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-4 col-form-label">Status Draft</label>
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <div class="form-check mr-4">
-                                    <input class="form-check-input" type="radio" name="radio1">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-check'></i></label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio1" checked="">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-exclamation-circle'></i></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-4 col-form-label">Status Verifikasi</label>
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <div class="form-check mr-4">
-                                    <input class="form-check-input" type="radio" name="radio1">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-check'></i></label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio1" checked="">
-                                    <label class="form-check-label"><i class='icon-copy fa fa-exclamation-circle'></i></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="btn btn-warning text-white" href="{{ route('user.index') }}">Kembali</a>
+                    <x-forms.radio-status label="Status Verifikasi" name="status_verifikasi" itemValue="{{ $user->status_verifikasi }}"/>
+                    <x-forms.radio-status label="Status Partisipasi" name="status_pertisipasi" itemValue="{{ $user->status_partisipasi }}"/>
+                    <x-forms.radio-status label="Status Draft" name="status_draft" itemValue="{{ $user->status_draft }}"/>
+                    
+                        <a class="btn btn-warning text-white" href="{{ route('user.index') }}">Kembali</a>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>

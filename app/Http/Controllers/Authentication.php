@@ -6,7 +6,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 
 class Authentication extends Controller
 {
@@ -60,28 +59,5 @@ class Authentication extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect(route('beranda'));
-    }
-
-    public function viewFormProfile()
-    {
-        $user = auth()->user();
-        return view('pages.account.profile', compact('user'));
-    }
-
-    public function updateProfil(UserRequest $request, User $user)
-    {
-        try {
-            $validated = $request->validated();
-            if ($request->has('foto_ktp')) {
-                File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-                $name_file = $request->foto_ktp->hashName();
-                $validated['foto_ktp'] = $name_file;
-                $request->foto_ktp->move('img/foto-ktp', $name_file);
-            }
-            $user->update($validated);
-            return redirect()->route('profile')->with('success', 'Perubahan data anda berhasil disimpan.');
-        } catch (\Exception) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
-        }
     }
 }

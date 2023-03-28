@@ -7,6 +7,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TinjauanController;
 use App\Http\Controllers\Authentication;
+use App\Http\Controllers\UserSettingController;
 
 Route::get('', [MainController::class, 'beranda'])->name('beranda');
 
@@ -25,12 +26,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
     });
 
-    Route::get('tinjauan', [TinjauanController::class, 'index'])->name('tinjauan.index');
+    Route::get('/lihat-profil', [UserSettingController::class, 'viewFormProfile'])->name('profile');
+    Route::patch('/profil/{user}', [UserSettingController::class, 'updateProfil'])->name('profile.update');
 
-    Route::prefix('profil')->name('profile.')->group(function () {
-        Route::get('', [Authentication::class, 'viewFormProfile'])->name('lihat');
-        Route::patch('{user}', [Authentication::class, 'updateProfil'])->name('update');
-    });
+    Route::get('/kata-sandi', [UserSettingController::class, 'viewFormPassword'])->name('password');
+    Route::post('/kata-sandi/{user}', [UserSettingController::class, 'updatePassword'])->name('password.update');
+
     Route::post('/keluar', [Authentication::class, 'logout'])->name('logout');
 });
 
