@@ -5,6 +5,7 @@ use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TinjauanController;
 use App\Http\Controllers\Authentication;
 
 Route::get('', [MainController::class, 'beranda'])->name('beranda');
@@ -23,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
         Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
     });
+
+    Route::get('tinjauan', [TinjauanController::class, 'index'])->name('tinjauan.index');
 
     Route::prefix('profil')->name('profile.')->group(function () {
         Route::get('', [Authentication::class, 'viewFormProfile'])->name('lihat');

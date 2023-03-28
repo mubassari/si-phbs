@@ -5,9 +5,11 @@ namespace App\Models;
 
 use App\Models\Preferensi;
 use App\Models\Survey;
+use App\Models\Tinjauan;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -67,6 +69,16 @@ class User extends Authenticatable
     public function survei(): BelongsToMany
     {
         return $this->belongsToMany(Survei::class, 'tinjauan');
+    }
+
+    /**
+     * Get all of the tinjauan for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tinjauan(): HasMany
+    {
+        return $this->hasMany(Tinjauan::class);
     }
 
     public function getPathFotoKtpAttribute()
