@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
@@ -74,8 +75,14 @@ class UserController extends Controller
     {
         return view('pages.user.status', compact('user'));
     }
-    public function updateStatus(User $user)
+    public function updateStatus(Request $request, User $user)
     {
-        dd('Here..!');
+
+        $user->update([
+            'status_verifikasi' => $request->status_verifikasi == "TRUE" ? true : false,
+            'status_partisipasi' => $request->status_partisipasi == "TRUE" ? true : false,
+            'status_draft' => $request->status_draft == "TRUE" ? true : false,
+        ]);
+        return redirect()->route('user.index')->with('success', 'Perubahan data status user berhasil disimpan.');
     }
 }
