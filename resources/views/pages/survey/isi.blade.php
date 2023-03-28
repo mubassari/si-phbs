@@ -1,7 +1,7 @@
 @extends('layouts.app', ['breadcrumb' => 'Isi Survey'])
 @section('content')
     <x-events.alert-success />
-    @if (!$user->status_draft)
+    @if (!($user->status_draft === 0))
         <div class="callout callout-info">
             <h5><i class="fas fa-info"></i> Informasi:</h5>
             Anda telah mengisi survey, Nilai Anda adalah 00
@@ -19,7 +19,7 @@
                         </tr>
                         <tr>
                             <td class="mb-3">
-                                @if ($user->status_draft)
+                                @if ($user->status_draft === 0)
                                     <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
                                         @foreach ($survey->preferensi as $key_y => $preferensi)
                                             @php
@@ -30,8 +30,8 @@
                                             @endphp
                                             <label
                                                 class="btn btn-outline-secondary m-1 rounded @if ($tinjauan_empty) active @endif">
-                                                <input type="radio" name="jawaban[{{ $survey->id }}]" autocomplete="off"
-                                                    @if ($tinjauan_empty) checked @endif
+                                                <input type="radio" name="jawaban[{{ $survey->id }}]" id="preferensi"
+                                                    autocomplete="off" @if ($tinjauan_empty) checked @endif
                                                     value="{{ $preferensi->id }}">{{ $preferensi->jawaban }}
                                             </label>
                                         @endforeach
@@ -46,11 +46,14 @@
                     @endforeach
                 </table>
             </div>
-            @if ($user->status_draft)
+            @if ($user->status_draft === 0)
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-secondary" name="draf" value="draf">Simpan Sebagai
+                    <button type="submit" class="btn btn-secondary" name="draf" id="draf" value="draf">Simpan
+                        Sebagai
                         Draf</button>
-                    <button type="submit" class="btn btn-primary" name="simpan" value="simpan">Kirim Survey</button>
+                    <button type="submit" class="btn btn-primary" name="simpan" id="simpan" value="simpan"
+                        disabled>Kirim
+                        Survey</button>
                 </div>
             @endif
         </form>
@@ -72,4 +75,17 @@
             border-color: #0062cc !important;
         }
     </style>
+@endpush
+
+@push('script')
+    @if ($user->status_draft === 0)
+        <script>
+            $(document).ready(function() {
+                $(document).on('change', '#preferensi', function() {
+                    const allUnchecked = $('#preferensi').not(':checked').length === $('#preferensi').length;
+                    $('#simpan').prop('disabled', allUnchecked);
+                });
+            });
+        </script>
+    @endif
 @endpush
