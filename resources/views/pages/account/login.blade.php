@@ -1,5 +1,5 @@
-@extends('layouts.master', ['class' => 'hold-transition register-page'])
-@section('main')
+@extends('layouts.app', ['breadcrumb' => 'Masuk'])
+@section('content')
 <div class="row my-4 w-100">
     <div class="col-12 col-sm-6 mx-auto">
         <div class="card card-primary">
