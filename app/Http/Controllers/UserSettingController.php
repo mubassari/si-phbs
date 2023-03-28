@@ -40,10 +40,6 @@ class UserSettingController extends Controller
             'password_old' => 'required',
             'password' => 'required|min:4|same:password_confirmation',
             'password_confirmation' => 'required'
-        ], [], [
-            'password_old' => 'Kata Sandi Lama',
-            'password' => 'Kata Sandi',
-            'password_confirmation' => 'Konfirmasi Kata Sandi',
         ]);
         if (password_verify($request->password_old, $user->password)) {
             $user->update([
