@@ -25,20 +25,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
     });
 
-<<<<<<< HEAD
     Route::get('/lihat-profil', [UserSettingController::class, 'viewFormProfile'])->name('profile');
     Route::patch('/profil/{user}', [UserSettingController::class, 'updateProfil'])->name('profile.update');
 
     Route::get('/kata-sandi', [UserSettingController::class, 'viewFormPassword'])->name('password');
     Route::post('/kata-sandi/{user}', [UserSettingController::class, 'updatePassword'])->name('password.update');
 
-
-=======
-    Route::prefix('profil')->name('profile.')->group(function () {
-        Route::get('', [Authentication::class, 'viewFormProfile'])->name('lihat');
-        Route::patch('{user}', [Authentication::class, 'updateProfil'])->name('update');
-    });
->>>>>>> 2beb048afcd542605aa13c643d3903f77a5de752
     Route::post('/keluar', [Authentication::class, 'logout'])->name('logout');
 });
 
