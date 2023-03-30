@@ -24,7 +24,7 @@
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-success"
                                         href="{{ route('tinjauan.review', ['user' => $user->id]) }}">Review</a>
-
+                                        
                                 </td>
                             </tr>
                         @endforeach

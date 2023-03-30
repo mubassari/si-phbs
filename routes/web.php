@@ -5,6 +5,7 @@ use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TinjauanController;
 use App\Http\Controllers\Authentication;
 use App\Http\Controllers\UserSettingController;
 
