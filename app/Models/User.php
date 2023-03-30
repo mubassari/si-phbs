@@ -30,6 +30,7 @@ class User extends Authenticatable
         'status_verifikasi',
         'status_partisipasi',
         'status_draft',
+        'catatan_admin',
         'password',
     ];
 

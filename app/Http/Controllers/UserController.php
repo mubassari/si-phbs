@@ -77,12 +77,13 @@ class UserController extends Controller
     }
     public function updateStatus(Request $request, User $user)
     {
-
         $user->update([
             'status_verifikasi' => $request->status_verifikasi == "TRUE" ? true : false,
             'status_partisipasi' => $request->status_partisipasi == "TRUE" ? true : false,
             'status_draft' => $request->status_draft == "TRUE" ? true : false,
+            'catatan_admin' => $request->catatan_admin,
         ]);
+
         return redirect()->route('user.index')->with('success', 'Perubahan data status user berhasil disimpan.');
     }
 }

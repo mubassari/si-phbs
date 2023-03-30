@@ -71,7 +71,7 @@
                 </ul>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('profile') }}" class="nav-link {{ Request::is('profil') ? 'active' : '' }}">
+                        <a href="{{ route('profile') }}" class="nav-link {{ Request::is('lihat-profil') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-circle"></i>
                             <p>Lihat Profil</p>
                         </a>
@@ -79,7 +79,7 @@
                 </ul>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('password') }}" class="nav-link">
+                        <a href="{{ route('password') }}" class="nav-link {{ Request::is('kata-sandi') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-cog" ></i>
                             <p>Kata Sandi</p>
                         </a>
@@ -97,7 +97,7 @@
             @guest
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('login') }}" class="nav-link">
+                    <a href="{{ route('login') }}" class="nav-link {{ Request::is('masuk') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-arrow-circle-right"></i>
                         <p>Masuk</p>
                     </a>
@@ -105,7 +105,7 @@
             </ul>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('register') }}" class="nav-link">
+                    <a href="{{ route('register') }}" class="nav-link {{ Request::is('daftar') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-cube"></i>
                         <p>Daftar</p>
                     </a>

@@ -42,9 +42,10 @@ class UserRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $password = $this->password ?? substr($this->telpon, -4, 4);
         $this->merge([
-            'password' => $this->password ?? substr($this->telpon, -4, 4),
-            'password_confirmation' => $this->password ?? substr($this->telpon, -4, 4),
+            'password' => $password,
+            'password_confirmation' => $password,
         ]);
     }
 }
