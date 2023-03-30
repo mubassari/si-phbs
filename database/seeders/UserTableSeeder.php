@@ -15,6 +15,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create('id_ID');
+        $faker->seed(1234);
         for ($i = 0; $i < 15; $i++) {
             User::create([
                 'nama' => $faker->firstName,
@@ -22,6 +23,7 @@ class UserTableSeeder extends Seeder
                 'telpon' => $faker->bothify('0823########'),
                 'foto_ktp' => 'default.png',
                 'password' => bcrypt('1234'),
+                'is_admin' => $i > 0 ? false : true,
             ]);
         }
     }

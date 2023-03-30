@@ -23,8 +23,8 @@
                                 <td class="text-center">{!! $user->icon_status_draft !!}</td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-success"
-                                        href="{{ route('user.edit', ['user' => $user->id]) }}">Review</a>
-
+                                        href="{{ route('tinjauan.review', ['user' => $user->id]) }}">Review</a>
+                                        
                                 </td>
                             </tr>
                         @endforeach
