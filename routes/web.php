@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
     });
 
+    Route::get('tinjauan', [TinjauanController::class, 'index'])->name('tinjauan.index');
+    Route::get('tinjauan/{user}', [TinjauanController::class, 'review'])->name('tinjauan.review');
+
     Route::get('/lihat-profil', [UserSettingController::class, 'viewFormProfile'])->name('profile');
     Route::patch('/profil/{user}', [UserSettingController::class, 'updateProfil'])->name('profile.update');
 
