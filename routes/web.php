@@ -23,16 +23,17 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('indikator', IndikatorController::class)->except(['show']);
         Route::resource('survey', SurveyController::class)->except(['show']);
-        
+
         Route::get('tinjauan', [TinjauanController::class, 'index'])->name('tinjauan.index');
         Route::get('tinjauan/{user}', [TinjauanController::class, 'review'])->name('tinjauan.review');
     });
 
-    Route::prefix('survey')->name('survey.')->group(function () {
-        Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
-        Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
+    Route::middleware('can:access\App\Models\Survey')->group(function () {
+        Route::prefix('survey')->name('survey.')->group(function () {
+            Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
+            Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
+        });
     });
-
 
     Route::get('profil', [UserSettingController::class, 'viewFormProfile'])->name('profile');
     Route::patch('profil/{user}', [UserSettingController::class, 'updateProfil'])->name('profile.update');
