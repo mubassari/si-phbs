@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class UserSettingController extends Controller
@@ -34,19 +34,15 @@ class UserSettingController extends Controller
         return view('pages.account.password', compact('user'));
     }
 
-    public function updatePassword(Request $request, User $user)
+    public function updatePassword(ChangePasswordRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'password_old' => 'required',
-            'password' => 'required|min:4|same:password_confirmation',
-            'password_confirmation' => 'required'
-        ]);
-        if (password_verify($request->password_old, $user->password)) {
+        $validated = $request->validated();
+        if (password_verify($request->kata_sandi_lama, $user->password)) {
             $user->update([
                 'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
             ]);
             return redirect(route('password'))->with('success', 'Perubahan informasi kata sandi anda berhasil disimpan.');
         }
-        return redirect()->back()->withErrors(['password_old' => 'Kata sandi lama yang anda masukkan salah.']);
+        return redirect()->back()->withErrors(['kata_sandi_lama' => 'Kata sandi lama yang anda masukkan salah.']);
     }
 }
