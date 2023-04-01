@@ -15,16 +15,16 @@ class RedirectIfUnauthorize
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $ability)
     {
-        if (!$request->user()->is_admin) {
+        if (!$request->user()->is_admin && $ability === "admin") {
             return redirect()->route('beranda');
         }
 
-        if(!(Survey::count() > 0)) {
+        if(!(Survey::count() > 0)  && $ability === "isi_survey") {
             return redirect()->route('beranda');
         }
-        
+
         return $next($request);
     }
 }

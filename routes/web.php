@@ -12,7 +12,7 @@ use App\Http\Controllers\UserSettingController;
 Route::get('', [MainController::class, 'beranda'])->name('beranda');
 
 Route::middleware(['auth'])->group(function () {
-    Route::middleware('redirect.unauthorize')->group(function () {
+    Route::middleware('redirect.unauthorize:admin')->group(function () {
         Route::resource('user', UserController::class);
         Route::prefix('user')->name('user.')->group(function () {
             Route::prefix('{user}')->name('status.')->group(function () {
@@ -26,7 +26,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('tinjauan', [TinjauanController::class, 'index'])->name('tinjauan.index');
         Route::get('tinjauan/{user}', [TinjauanController::class, 'review'])->name('tinjauan.review');
+    });
 
+    Route::middleware('redirect.unauthorize:isi_survey')->group(function () {
         Route::prefix('survey')->name('survey.')->group(function () {
             Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
             Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
