@@ -43,7 +43,7 @@ class Authentication extends Controller
         return redirect()->route('login')->with('success', 'Berhasil melakuakn pendaftaran, silakan masuk untuk mengisi survey pada sistem kami.');
     }
 
-    function logout(Request $request)
+    function logout(\Illuminate\Http\Request $request)
     {
         \Illuminate\Support\Facades\Auth::logout();
         $request->session()->invalidate();
