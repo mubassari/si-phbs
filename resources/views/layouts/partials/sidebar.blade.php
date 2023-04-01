@@ -28,7 +28,7 @@
                 </li>
             </ul>
             @auth
-                @can('access', \App\User::class)
+                @if (auth()->user()->is_admin)
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -51,7 +51,8 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('survey.index') }}" class="nav-link {{ Request::is('survey*') ? 'active' : '' }}">
+                            <a href="{{ route('survey.index') }}"
+                                class="nav-link {{ Request::is('survey*') ? 'active' : '' }}">
                                 <i class="nav-icon fa fa-bullhorn"></i>
                                 <p>Survey</p>
                             </a>
@@ -67,9 +68,9 @@
                             </a>
                         </li>
                     </ul>
-                @endcan
+                @endif
 
-                @can('access', App\Survey::class)
+                @if (\App\Models\Survey::count() > 0)
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -80,7 +81,7 @@
                             </a>
                         </li>
                     </ul>
-                @endcan
+                @endif
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
