@@ -1,6 +1,5 @@
 @extends('layouts.app', ['breadcrumb' => 'Isi Survey'])
 @section('content')
-    <x-events.alert-success />
     @if (!($user->status_draft === 0))
         <div class="callout callout-info">
             <h5><i class="fas fa-info"></i> Informasi:</h5>

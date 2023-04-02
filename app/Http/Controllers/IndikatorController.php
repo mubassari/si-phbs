@@ -28,9 +28,15 @@ class IndikatorController extends Controller
 
             $request->foto->move('img/foto-indikator', $name_file);
 
-            return redirect()->route('indikator.index')->with('success', 'Penambahan data indikator berhasil disimpan.');
+            return redirect()->route('indikator.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menyimpan data Indikator!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -51,10 +57,16 @@ class IndikatorController extends Controller
             }
 
             $indikator->update($validated);
-            
-            return redirect()->route('indikator.index')->with('success', 'Perubahan data indikator berhasil disimpan.');
+
+            return redirect()->route('indikator.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui data Indikator!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -64,9 +76,15 @@ class IndikatorController extends Controller
             $indikator->delete();
             File::delete(public_path("img/foto-indikator/$indikator->foto"));
 
-            return redirect()->route('indikator.index')->with('success', 'Data indikator berhasil dihapus.');
+            return redirect()->route('indikator.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menghapus data Indikator!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi!'
+            ]);
         }
     }
 }

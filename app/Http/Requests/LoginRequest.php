@@ -49,7 +49,7 @@ class LoginRequest extends FormRequest
             $user = \App\Models\User::where('telpon', $this->telpon)->first('password');
             if($user){
                 if (!\Illuminate\Support\Facades\Hash::check($this->password, $user->password)) {
-                    $validator->errors()->add('password', 'Kata sandi salah.');
+                    $validator->errors()->add('password', 'Kata sandi tidak tepat.');
                 }
             }
         });

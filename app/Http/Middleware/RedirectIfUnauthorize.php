@@ -18,11 +18,17 @@ class RedirectIfUnauthorize
     public function handle(Request $request, Closure $next, $ability)
     {
         if (!$request->user()->is_admin && $ability === "admin") {
-            return redirect()->route('beranda');
+            return redirect()->route('beranda')->with('alert', [
+                'status' => 'warning',
+                'pesan'  => 'Anda tidak memiliki akses ke laman ini!'
+            ]);
         }
 
         if(!(Survey::count() > 0)  && $ability === "isi_survey") {
-            return redirect()->route('beranda');
+            return redirect()->route('beranda')->with('alert', [
+                'status' => 'warning',
+                'pesan'  => 'Survey belum tersedia, harap coba lagi nanti!'
+            ]);
         }
 
         return $next($request);

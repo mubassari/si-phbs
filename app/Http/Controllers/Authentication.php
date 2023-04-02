@@ -19,10 +19,14 @@ class Authentication extends Controller
         $credentials = $request->validated();
         if (Auth::attempt($credentials)) {
             $request->session()->regenerateToken();
-            return redirect(route('beranda'));
+            return redirect()->route('beranda')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil masuk!'
+            ]);
         } else {
-            return redirect()->back()->onlyInput('email')->withErrors([
-                'error' => 'No Telpon dan kata sandi tidak sesuai.'
+            return redirect()->back()->onlyInput('email')->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Nomor telpon atau Kata sandi Anda salah!'
             ]);
         }
     }
@@ -33,14 +37,25 @@ class Authentication extends Controller
     }
     function register(RegisterRequest $request)
     {
-        $validated = $request->validated();
+        try{
+            $validated = $request->validated();
 
-        $name_file = $request->foto_ktp->hashName();
-        $request->foto_ktp->move('img/foto-ktp', $name_file);
-        $validated['foto_ktp'] = $name_file;
-        $validated['password'] = bcrypt($request->password);
-        User::create($validated);
-        return redirect()->route('login')->with('success', 'Berhasil melakuakn pendaftaran, silakan masuk untuk mengisi survey pada sistem kami.');
+            $name_file = $request->foto_ktp->hashName();
+            $request->foto_ktp->move('img/foto-ktp', $name_file);
+            $validated['foto_ktp'] = $name_file;
+            $validated['password'] = bcrypt($request->password);
+            User::create($validated);
+
+            return redirect()->route('login')->with('alert', [
+                    'status' => 'success',
+                    'pesan'  => 'Pendaftaran berhasil! Silakan masuk untuk mengisi survey!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('register')->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat mendaftarkan data. Silakan coba lagi!'
+            ]);
+        }
     }
 
     function logout(\Illuminate\Http\Request $request)
@@ -48,6 +63,10 @@ class Authentication extends Controller
         \Illuminate\Support\Facades\Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect(route('beranda'));
+
+        return redirect()->route('beranda')->with('alert', [
+            'status' => 'success',
+            'pesan'  => 'Anda berhasil keluar!'
+        ]);
     }
 }

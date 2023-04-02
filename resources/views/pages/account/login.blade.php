@@ -9,7 +9,6 @@
             <!-- /.card-header -->
             <!-- form start -->
             <div class="p-2">
-              <x-events.alert-success />
             </div>
             <form class="form-horizontal" method="POST" action="{{ route('authenticate') }}">
               @csrf

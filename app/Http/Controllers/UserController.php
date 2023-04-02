@@ -31,9 +31,15 @@ class UserController extends Controller
 
             $request->foto_ktp->move('img/foto-ktp', $name_file);
 
-            return redirect()->route('user.index')->with('success', 'Penambahan data user berhasil disimpan.');
+            return redirect()->route('user.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menyimpan data User!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -53,9 +59,16 @@ class UserController extends Controller
                 $request->foto_ktp->move('img/foto-ktp', $name_file);
             }
             $user->update($validated);
-            return redirect()->route('user.index')->with('success', 'Perubahan data user berhasil disimpan.');
+
+            return redirect()->route('user.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui data User!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -65,9 +78,15 @@ class UserController extends Controller
             $user->delete();
             File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
 
-            return redirect()->route('user.index')->with('success', 'Data user berhasil dihapus.');
+            return redirect()->route('user.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menghapus data User!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -77,13 +96,23 @@ class UserController extends Controller
     }
     public function updateStatus(Request $request, User $user)
     {
-        $user->update([
-            'status_verifikasi' => $request->status_verifikasi == "TRUE" ? true : false,
-            'status_partisipasi' => $request->status_partisipasi == "TRUE" ? true : false,
-            'status_draft' => $request->status_draft == "TRUE" ? true : false,
-            'catatan_admin' => $request->catatan_admin,
-        ]);
+        try {
+            $user->update([
+                'status_verifikasi' => $request->status_verifikasi == "TRUE" ? true : false,
+                'status_partisipasi' => $request->status_partisipasi == "TRUE" ? true : false,
+                'status_draft' => $request->status_draft == "TRUE" ? true : false,
+                'catatan_admin' => $request->catatan_admin,
+            ]);
 
-        return redirect()->route('user.index')->with('success', 'Perubahan data status user berhasil disimpan.');
+            return redirect()->route('user.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui data Status User!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('user.index')->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
+        }
     }
 }

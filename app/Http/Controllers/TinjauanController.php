@@ -17,8 +17,6 @@ class TinjauanController extends Controller
 
     public function review(User $user)
     {
-        // $list_user = User::has('tinjauan')->withCount('tinjauan')->latest()->paginate(5);
-        // $survey_count = Survey::count();
         $user_data = collect([$user])->transform(function($data) {
             $survey_tinjauan = [];
             foreach ($data->tinjauan->sortBy(function($tinjauan) {

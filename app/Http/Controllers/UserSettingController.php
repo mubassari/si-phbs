@@ -17,15 +17,26 @@ class UserSettingController extends Controller
 
     public function updateProfil(UserRequest $request, User $user)
     {
-        $validated = $request->safe()->except('password');
-        if ($request->has('foto_ktp')) {
-            File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-            $name_file = $request->foto_ktp->hashName();
-            $validated['foto_ktp'] = $name_file;
-            $request->foto_ktp->move('img/foto-ktp', $name_file);
+        try {
+            $validated = $request->safe()->except('password');
+            if ($request->has('foto_ktp')) {
+                File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
+                $name_file = $request->foto_ktp->hashName();
+                $validated['foto_ktp'] = $name_file;
+                $request->foto_ktp->move('img/foto-ktp', $name_file);
+            }
+            $user->update($validated);
+
+            return redirect()->route('profile')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui data Profil Anda!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('profile')->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
         }
-        $user->update($validated);
-        return redirect()->route('profile')->with('success', 'Perubahan data anda berhasil disimpan.');
     }
 
     public function viewFormPassword()
@@ -36,13 +47,21 @@ class UserSettingController extends Controller
 
     public function updatePassword(ChangePasswordRequest $request, User $user)
     {
-        $validated = $request->validated();
-        if (password_verify($request->kata_sandi_lama, $user->password)) {
+        try{
+            $validated = $request->validated();
             $user->update([
                 'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
             ]);
-            return redirect(route('password'))->with('success', 'Perubahan informasi kata sandi anda berhasil disimpan.');
+
+            return redirect()->route('password')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui Kata Sandi Anda!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
         }
-        return redirect()->back()->withErrors(['kata_sandi_lama' => 'Kata sandi lama yang anda masukkan salah.']);
     }
 }

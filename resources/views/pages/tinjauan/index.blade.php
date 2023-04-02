@@ -3,7 +3,6 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <x-events.alert-success />
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -24,7 +23,7 @@
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-success"
                                         href="{{ route('tinjauan.review', ['user' => $user->id]) }}">Review</a>
-                                        
+
                                 </td>
                             </tr>
                         @endforeach

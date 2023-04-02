@@ -40,11 +40,17 @@ class SurveyController extends Controller
 
             DB::commit();
 
-            return redirect()->route('survey.index')->with('success', 'Penambahan data survey berhasil disimpan.');
+            return redirect()->route('survey.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menyimpan data Survey!'
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
 
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -71,11 +77,17 @@ class SurveyController extends Controller
 
             DB::commit();
 
-            return redirect()->route('survey.index')->with('success', 'Perubahan data survey berhasil disimpan.');
+            return redirect()->route('survey.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memperbarui data Survey!'
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
 
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -83,9 +95,15 @@ class SurveyController extends Controller
     {
         try {
             $survey->delete();
-            return redirect(route('survey.index'))->with('success', 'Data survey berhasil dihapus.');
+            return redirect()->route('survey.index')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil menghapus data Survey!'
+            ]);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi!'
+            ]);
         }
     }
 
@@ -116,10 +134,23 @@ class SurveyController extends Controller
 
             DB::commit();
 
-            return redirect()->route('survey.isi')->with('success', 'Survey berhasil dikirim.');
+            if ($request->has('draf')) {
+                return redirect()->route('survey.isi')->with('alert', [
+                    'status' => 'secondary',
+                    'pesan'  => 'Anda berhasil mengirim data Survey sebagai <strong>draf</strong>. Data ini tidak akan kami proses!'
+                ]);
+            }
+
+            return redirect()->route('survey.isi')->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil mengirim data Survey!'
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.']);
+            return back()->withInput()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan pada saat mengirim data. Silakan coba lagi!'
+            ]);
         }
     }
 }
