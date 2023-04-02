@@ -11,12 +11,16 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
 
     @stack('style')
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body class="{{ $class }}">
 
     @yield('main')
-
     <!-- jQuery -->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
@@ -27,9 +31,7 @@
     @stack('script')
     @if (session('scroll_position'))
         <script>
-            $('{{ session('scroll_position') }}')[0].scrollIntoView({
-                behavior: 'smooth'
-            });
+            $('{{ session('scroll_position') }}')[0].scrollIntoView();
         </script>
     @endif
 </body>

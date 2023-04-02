@@ -35,6 +35,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+        <x-scroll-top />
 
         @include('layouts.partials.footer')
 
