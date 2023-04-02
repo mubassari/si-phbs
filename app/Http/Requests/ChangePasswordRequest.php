@@ -29,4 +29,11 @@ class ChangePasswordRequest extends FormRequest
             'password_confirmation' => 'required|same:password'
         ];
     }
+
+    public function withValidator($validator)
+    {
+        if ($validator->fails()) {
+            return redirect()->back()->with('scroll_position', '#password');
+        }
+    }
 }

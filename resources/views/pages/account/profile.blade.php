@@ -13,7 +13,7 @@
                     </div>
                 @endif
                 <form class="form-horizontal" enctype="multipart/form-data"
-                    action="{{ route('profile.update', ['user' => $user->id]) }}" method="POST">
+                    action="{{ route('user.update', ['user' => $user->id]) }}" method="POST">
                     @csrf @method('PATCH')
                     <x-forms.input-group label="Nama" name="nama" id="nama" type="text"
                         itemValue="{{ $user->nama }}" />
@@ -36,6 +36,26 @@
                     <div class="col-sm-8 offset-sm-4 text-center">
                         <img src="{{ asset($user->path_foto_ktp) }}" class="img img-thumbnail"id="preview" width="180px">
                     </div>
+                    <div class="form-group row">
+                        <div class="offset-sm-4 col-sm-8">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card" id="password">
+            <div class="card-header">
+                <h3 class="card-title">Form Kata Sandi</h3>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" action="{{ route('profile.password', ['user' => $user->id]) }}" method="POST">
+                    @csrf @method('PATCH')
+                    <x-forms.input-group id="kata_sandi_lama" type="password" label='Kata Sandi Lama' name='kata_sandi_lama'
+                        old="false" />
+                    <x-forms.input-group id="password" type="password" label='Kata Sandi' name='password' />
+                    <x-forms.input-group id="password_confirmation" type="password" label='Konfirmasi Kata Sandi'
+                        name='password_confirmation' />
                     <div class="form-group row">
                         <div class="offset-sm-4 col-sm-8">
                             <button type="submit" class="btn btn-primary">Simpan</button>

@@ -93,19 +93,9 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('profile') }}" class="nav-link {{ Request::is('profil') ? 'active' : '' }}">
+                        <a href="{{ route('profile.detail') }}" class="nav-link {{ Request::is('profil') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-circle"></i>
                             <p>Lihat Profil</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    <li class="nav-item">
-                        <a href="{{ route('password') }}"
-                            class="nav-link {{ Request::is('kata-sandi') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-cog"></i>
-                            <p>Kata Sandi</p>
                         </a>
                     </li>
                 </ul>

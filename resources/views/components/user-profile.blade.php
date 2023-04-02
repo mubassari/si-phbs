@@ -16,7 +16,7 @@
                             <b>No Telpon</b> <a class="float-right">{{ $user_data->telpon }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>ALamat</b> <a class="float-right">{{ $user_data->alamat }}</a>
+                            <b>Alamat</b> <a class="float-right">{{ $user_data->alamat }}</a>
                         </li>
                     </ul>
                 </div>

@@ -27,23 +27,23 @@ class UserSettingController extends Controller
             }
             $user->update($validated);
 
-            return redirect()->route('profile')->with('alert', [
+            return redirect()->route('profile.detail')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil memperbarui data Profil Anda!'
             ]);
         } catch (\Exception $e) {
-            return redirect()->route('profile')->with('alert', [
+            return redirect()->route('profile.detail')->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
             ]);
         }
     }
 
-    public function viewFormPassword()
-    {
-        $user = auth()->user();
-        return view('pages.account.password', compact('user'));
-    }
+    // public function viewFormPassword()
+    // {
+    //     $user = auth()->user();
+    //     return view('pages.account.password', compact('user'));
+    // }
 
     public function updatePassword(ChangePasswordRequest $request, User $user)
     {
@@ -53,7 +53,7 @@ class UserSettingController extends Controller
                 'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
             ]);
 
-            return redirect()->route('password')->with('alert', [
+            return redirect()->route('profile.detail')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil memperbarui Kata Sandi Anda!'
             ]);

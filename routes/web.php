@@ -36,10 +36,11 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    Route::get('profil', [UserSettingController::class, 'viewFormProfile'])->name('profile');
-    Route::patch('profil/{user}', [UserSettingController::class, 'updateProfil'])->name('profile.update');
-    Route::get('kata-sandi', [UserSettingController::class, 'viewFormPassword'])->name('password');
-    Route::post('kata-sandi/{user}', [UserSettingController::class, 'updatePassword'])->name('password.update');
+    Route::prefix('profil')->name('profile.')->group(function () {
+        Route::get('', [UserSettingController::class, 'viewFormProfile'])->name('detail');
+        Route::patch('{user}', [UserSettingController::class, 'updateProfil'])->name('update');
+        Route::patch('sandi', [UserSettingController::class, 'updatePassword'])->name('password');
+    });
     Route::post('keluar', [Authentication::class, 'logout'])->name('logout');
 });
 
