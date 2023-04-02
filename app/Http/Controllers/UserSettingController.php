@@ -39,12 +39,6 @@ class UserSettingController extends Controller
         }
     }
 
-    // public function viewFormPassword()
-    // {
-    //     $user = auth()->user();
-    //     return view('pages.account.password', compact('user'));
-    // }
-
     public function updatePassword(ChangePasswordRequest $request, User $user)
     {
         try{

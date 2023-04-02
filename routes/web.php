@@ -38,8 +38,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('profil')->name('profile.')->group(function () {
         Route::get('', [UserSettingController::class, 'viewFormProfile'])->name('detail');
-        Route::patch('{user}', [UserSettingController::class, 'updateProfil'])->name('update');
-        Route::patch('sandi', [UserSettingController::class, 'updatePassword'])->name('password');
+        Route::prefix('{user}')->name('profile.')->group(function () {
+            Route::patch('', [UserSettingController::class, 'updateProfil'])->name('update');
+            Route::patch('sandi', [UserSettingController::class, 'updatePassword'])->name('password');
+        });
     });
     Route::post('keluar', [Authentication::class, 'logout'])->name('logout');
 });
