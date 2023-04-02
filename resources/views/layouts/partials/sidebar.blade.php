@@ -74,11 +74,19 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('survey.isi') }}"
-                                class="nav-link {{ Request::is('survey/isi') ? 'active' : '' }}">
-                                <i class="nav-icon fa fa-edit"></i>
-                                <p>Isi Survey</p>
-                            </a>
+                            @if (auth()->user()->status_draft)
+                                <a href="{{ route('survey.isi') }}"
+                                    class="nav-link {{ Request::is('survey/isi') ? 'active' : '' }}">
+                                    <i class="nav-icon fa fa-edit"></i>
+                                    <p>Isi Survey</p>
+                                </a>
+                            @else
+                                <a href="{{ route('survey.saya') }}"
+                                    class="nav-link {{ Request::is('survey/saya') ? 'active' : '' }}">
+                                    <i class="nav-icon fa fa-edit"></i>
+                                    <p>Survey Saya</p>
+                                </a>
+                            @endif
                         </li>
                     </ul>
                 @endif

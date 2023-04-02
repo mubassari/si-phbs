@@ -28,10 +28,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('tinjauan/{user}', [TinjauanController::class, 'review'])->name('tinjauan.review');
     });
 
-    Route::middleware('redirect.unauthorize:isi_survey')->group(function () {
-        Route::prefix('survey')->name('survey.')->group(function () {
-            Route::get('isi', [SurveyController::class, 'viewFormSurvey'])->name('isi');
-            Route::post('isi', [SurveyController::class, 'kirimSurvey'])->name('kirim');
+    Route::prefix('survey')->name('survey.')->group(function () {
+        Route::get('saya', [SurveyController::class, 'viewSurveySaya'])->middleware('redirect.unauthorize:tampil_survey')->name('saya');
+        Route::prefix('isi')->middleware('redirect.unauthorize:isi_survey')->group(function () {
+            Route::get('', [SurveyController::class, 'viewFormSurvey'])->name('isi');
+            Route::post('', [SurveyController::class, 'kirimSurvey'])->name('kirim');
         });
     });
 
