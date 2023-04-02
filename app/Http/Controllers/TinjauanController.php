@@ -17,7 +17,7 @@ class TinjauanController extends Controller
 
     public function review(User $user)
     {
-        $user_data = collect([$user])->transform(function($data) {
+        $tinjauan = collect([$user])->transform(function($data) {
             $survey_tinjauan = [];
             foreach ($data->tinjauan->sortBy(function($tinjauan) {
                 return $tinjauan->survey_id;
@@ -28,15 +28,9 @@ class TinjauanController extends Controller
                 ]);
             }
 
-            $datas = [
-                'id' => $data->id,
-                'nama' => $data->nama,
-                'tinjauan' => $survey_tinjauan
-            ];
-
-            return $datas;
+            return $survey_tinjauan;
         })->first();
 
-        return view('pages.tinjauan.review', compact('user_data'));
+        return view('pages.tinjauan.review', compact('user', 'tinjauan'));
     }
 }

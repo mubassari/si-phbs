@@ -1,6 +1,6 @@
 @extends('layouts.app', ['breadcrumb' => 'Isi Survey'])
 @section('content')
-    @if (!($user->status_draft === 0))
+    @if (!$user->status_draft)
         <div class="callout callout-info">
             <h5><i class="fas fa-info"></i> Informasi:</h5>
             Anda telah mengisi survey, Nilai Anda adalah 00
@@ -18,7 +18,7 @@
                         </tr>
                         <tr>
                             <td class="mb-3">
-                                @if ($user->status_draft === 0)
+                                @if ($user->status_draft)
                                     <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
                                         @foreach ($survey->preferensi as $key_y => $preferensi)
                                             @php
@@ -45,7 +45,7 @@
                     @endforeach
                 </table>
             </div>
-            @if ($user->status_draft === 0)
+            @if ($user->status_draft)
                 <div class="card-footer">
                     <button type="submit" class="btn btn-secondary" name="draf" id="draf" value="draf">Simpan
                         Sebagai

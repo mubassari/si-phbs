@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('foto_ktp');
             $table->boolean('is_admin')->default(false);
             $table->boolean('status_partisipasi')->default(false);
-            $table->boolean('status_draft')->default(false);
+            $table->boolean('status_draft')->default(true);
             $table->boolean('status_verifikasi')->default(false);
             $table->string('catatan_admin')->nullable();
             $table->string('password');
