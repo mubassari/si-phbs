@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('profil')->name('profile.')->group(function () {
         Route::get('', [UserSettingController::class, 'viewFormProfile'])->name('detail');
-        Route::prefix('{user}')->name('profile.')->group(function () {
+        Route::prefix('{user}')->group(function () {
             Route::patch('', [UserSettingController::class, 'updateProfil'])->name('update');
             Route::patch('sandi', [UserSettingController::class, 'updatePassword'])->name('password');
         });
