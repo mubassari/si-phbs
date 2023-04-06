@@ -14,12 +14,7 @@ Route::get('', [MainController::class, 'beranda'])->name('beranda');
 Route::middleware(['auth'])->group(function () {
     Route::middleware('redirect.unauthorize:admin')->group(function () {
         Route::resource('user', UserController::class);
-        Route::prefix('user')->name('user.')->group(function () {
-            Route::prefix('{user}')->name('status.')->group(function () {
-                Route::get('status', [UserController::class, 'editStatus'])->name('edit');
-                Route::post('status', [UserController::class, 'updateStatus'])->name('update');
-            });
-        });
+        Route::post('user/{user}/status', [UserController::class, 'updateStatus'])->name('user.status.update');
 
         Route::resource('indikator', IndikatorController::class)->except(['show']);
         Route::resource('survey', SurveyController::class)->except(['show']);

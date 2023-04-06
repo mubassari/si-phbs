@@ -138,7 +138,10 @@ class SurveyController extends Controller
                 ]);
             }
 
-            User::find($user_id)->update(['status_draft' => $request->has('draf')]);
+            User::find($user_id)->update([
+                'status_draft'       => $request->has('draf'),
+                'status_partisipasi' => true
+            ]);
 
             DB::commit();
 

@@ -89,12 +89,16 @@ class User extends Authenticatable
     }
     public function getIconStatusPartisipasiAttribute()
     {
-        $icon = $this->status_partisipasi ? 'fa-check' : 'fa-exclamation-circle';
+        $icon = $this->status_partisipasi
+                    ? $this->status_draft
+                        ? 'fa-hourglass-half'
+                        : 'fa-check'
+                    : 'fa-exclamation-circle';
         return "<i class='icon-copy fa $icon'></i>";
     }
     public function getIconStatusDraftAttribute($value)
     {
-        $icon = $this->status_draft ? 'fa-check' : 'fa-exclamation-circle';
+        $icon = $this->status_draft ? 'fa-exclamation-circle' : 'fa-check';
         return "<i class='icon-copy fa $icon'></i>";
     }
     public function getIconStatusVerifikasiAttribute()

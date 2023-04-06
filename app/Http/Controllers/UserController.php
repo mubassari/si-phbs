@@ -90,17 +90,13 @@ class UserController extends Controller
         }
     }
 
-    public function editStatus(User $user)
-    {
-        return view('pages.user.status', compact('user'));
-    }
     public function updateStatus(Request $request, User $user)
     {
         try {
             $user->update([
-                'status_verifikasi' => $request->status_verifikasi == "TRUE" ? true : false,
-                'status_partisipasi' => $request->status_partisipasi == "TRUE" ? true : false,
-                'status_draft' => $request->status_draft == "TRUE" ? true : false,
+                'status_verifikasi' => $request->has('status_verifikasi'),
+                'status_partisipasi' => $request->has('status_partisipasi'),
+                'status_draft' => $request->has('status_draft'),
                 'catatan_admin' => $request->catatan_admin,
             ]);
 

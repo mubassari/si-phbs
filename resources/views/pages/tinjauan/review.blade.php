@@ -1,6 +1,10 @@
 @extends('layouts.app', ['breadcrumb' => 'Review Survey User'])
 @section('content')
     <x-user-profile :user="$user">
+        <div class="callout callout-info">
+            <h5><i class="fas fa-info"></i> Informasi:</h5>
+            <p>Nilai <strong>{{ $user->nama }}</strong> adalah <strong>00</strong></p>
+        </div>
         <div class="card">
             <div class="card-header h4">Jawaban Survey</div>
             <div class="card-body">
