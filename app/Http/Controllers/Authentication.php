@@ -19,7 +19,7 @@ class Authentication extends Controller
         $credentials = $request->validated();
         if (Auth::attempt($credentials)) {
             $request->session()->regenerateToken();
-            return redirect()->route('beranda')->with('alert', [
+            return redirect()->intended(route('beranda'))->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil masuk!'
             ]);
