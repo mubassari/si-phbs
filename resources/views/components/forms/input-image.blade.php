@@ -1,6 +1,10 @@
 <div class="form-group row">
     <label for="{{ $name }}" class="col-sm-4 col-form-label">{{ $label }}</label>
     <div class="col-sm-8">
+        <div class="mb-3 text-center" id="preview">
+            <img src="{{ !isset($old) ? old($name, $src ?? asset('assets/dist/img/foto-ktp/default.png')) : $src }}"
+                class="img img-thumbnail" width="{{ $width ?? '180px' }}">
+        </div>
         <div class="custom-file">
             <input type="file" name="{{ $name }}" {{ $attributes }}
                 class="custom-file-input @error($name) is-invalid @enderror" id="{{ $name }}"
@@ -10,9 +14,7 @@
         </div>
     </div>
 </div>
-<div class="col-sm-8 offset-sm-4 text-center @if (!isset($src)) invisible @endif" id="preview">
-    <img src="{{ $src }}" class="img img-thumbnail" width="{{ $width ?? '180px' }}">
-</div>
+
 
 @push('script')
     <script>
@@ -28,7 +30,6 @@
             reader.onload = function() {
                 let preview = $('#preview img:first');
                 if (preview.length > 0) {
-                    preview.closest('#preview').removeClass("invisible");
                     preview[0].src = reader.result;
                 }
             }
