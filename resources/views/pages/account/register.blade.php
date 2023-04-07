@@ -6,7 +6,6 @@
                 <div class="card-header align-middle">
                     <h2 class="card-title text-bold">Form Pendaftaran</h2>
                 </div>
-                <!-- form start -->
                 <form class="form-horizontal" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
@@ -20,13 +19,15 @@
                         <x-forms.input-group label="Alamat" name="alamat" id="alamat" type="text"
                             itemValue="{{ $user->alamat ?? '' }}" />
                         <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="asset('assets/dist/img/foto-ktp/default.png')" />
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-8">
+                                <button type="submit" class="btn btn-primary">Daftar</button>
+                            </div>
+                        </div>
+                        <hr>
+                        Sudah punya akun? &nbsp;<a href="{{ route('login') }}">Masuk</a>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        <a href="{{ route('login') }}" class="btn btn-primary">Masuk</a>
-                        <button type="submit" class="btn btn-success">Daftar</button>
-                    </div>
-                    <!-- /.card-footer -->
                 </form>
             </div>
         </div>
