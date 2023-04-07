@@ -105,9 +105,29 @@ class UserController extends Controller
                 'pesan'  => 'Anda berhasil memperbarui data Status User!'
             ]);
         } catch (\Exception $e) {
-            return redirect()->route('user.index')->with('alert', [
+            return back()->withInput()->with('alert', [
                 'status' => 'danger',
-                'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
+                'pesan'  => 'Terjadi kesalahan saat memperbarui status <strong>'.$user->nama.'</strong>. Silakan coba lagi!'
+            ]);
+        }
+    }
+
+    public function verify(Request $request, User $user)
+    {
+        // dd($request);
+        try {
+            $user->update([
+                'status_verifikasi' => true,
+            ]);
+
+            return redirect()->back()->with('alert', [
+                'status' => 'success',
+                'pesan'  => 'Anda berhasil memverifikasi <strong>'.$user->nama.'</strong>!'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Terjadi kesalahan saat  memverifikasi <strong>'.$user->nama.'</strong>. Silakan coba lagi!'
             ]);
         }
     }

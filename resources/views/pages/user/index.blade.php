@@ -12,6 +12,7 @@
                             <th>Telpon</th>
                             <th>Alamat</th>
                             <th>Foto Ktp</th>
+                            <th class="text-center">Status Verifikasi</th>
                             <th class="text-center">Status Partisipasi</th>
                             <th class="text-center">Opsi</th>
                         </tr>
@@ -25,6 +26,17 @@
                                 <td>{{ $user->alamat }}</td>
                                 <td><img class="img" width="70px" src="{{ $user->path_foto_ktp }}"
                                         alt="{{ $user->foto }}"></td>
+                                @if ($user->status_verifikasi)
+                                    <td class="text-center">Terverifikasi</td>
+                                @else
+                                    <td class="text-center">
+                                        <form method="POST"
+                                            action="{{ route('user.verify', ['user' => $user->id]) }}"class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-primary">Verifikasi</button>
+                                        </form>
+                                    </td>
+                                @endif
                                 <td class="text-center">{!! $user->icon_status_partisipasi !!}</td>
                                 <td class="text-center">
                                     <div style="width: 110px">
@@ -63,7 +75,9 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col d-flex justify-content-center justify-content-md-end mt-3 mt-md-0">{{ $list_user->links() }}</div>
+                <div class="col d-flex justify-content-center justify-content-md-end mt-3 mt-md-0">
+                    {{ $list_user->links() }}
+                </div>
             </div>
         </div>
         <!-- /.card-body -->

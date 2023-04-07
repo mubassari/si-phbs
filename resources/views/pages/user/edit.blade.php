@@ -27,11 +27,11 @@
                 <form class="form-horizontal" id="form-member" method="POST"
                     action="{{ route('user.status.update', ['user' => $user->id]) }}">
                     @csrf
-                    <x-forms.radio-status label="Status Verifikasi" name="status_verifikasi"
+                    <x-forms.input-switch label="Status Verifikasi" name="status_verifikasi"
                         itemValue="{{ $user->status_verifikasi }}" />
-                    <x-forms.radio-status label="Status Partisipasi" name="status_partisipasi"
+                    <x-forms.input-switch label="Status Partisipasi" name="status_partisipasi"
                         itemValue="{{ $user->status_partisipasi }}" />
-                    <x-forms.radio-status label="Status Draft" name="status_draft" itemValue="{{ $user->status_draft }}" />
+                    <x-forms.input-switch label="Status Draft" name="status_draft" itemValue="{{ $user->status_draft }}" />
                     <x-forms.input-group label="Tambahkan Catatan" name="catatan_admin" id="catatan_admin" type="text"
                         itemValue="{{ $user->catatan_admin }}" />
 

@@ -101,9 +101,4 @@ class User extends Authenticatable
         $icon = $this->status_draft ? 'fa-exclamation-circle' : 'fa-check';
         return "<i class='icon-copy fa $icon'></i>";
     }
-    public function getIconStatusVerifikasiAttribute()
-    {
-        $icon = $this->status_verifikasi ? 'fa-check-circle' : 'fa-info-circle';
-        return "<i class='icon-copy fa $icon'></i>";
-    }
 }
