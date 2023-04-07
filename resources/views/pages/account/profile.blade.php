@@ -21,21 +21,7 @@
                         itemValue="{{ $user->telpon }}" />
                     <x-forms.input-group label="Alamat" name="alamat" id="alamat" type="text"
                         itemValue="{{ $user->alamat }}" />
-                    <div class="form-group row">
-                        <label for="foto_ktp" class="col-sm-4 col-form-label">Foto KTP</label>
-                        <div class="col-sm-8">
-                            <div class="custom-file">
-                                <input type="file" name="foto_ktp"
-                                    class="custom-file-input @error('foto_ktp') is-invalid @enderror" id="foto_ktp"
-                                    accept="image/jpeg,image/png,image/jpg">
-                                <label class="custom-file-label">Pilih Foto</label>
-                                <x-events.error-message error="foto_ktp" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8 offset-sm-4 text-center">
-                        <img src="{{ asset($user->path_foto_ktp) }}" class="img img-thumbnail"id="preview" width="180px">
-                    </div>
+                    <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="$user->path_foto_ktp ?? null" />
                     <div class="form-group row">
                         <div class="offset-sm-4 col-sm-8">
                             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -49,7 +35,8 @@
                 <h3 class="card-title">Form Kata Sandi</h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="{{ route('profile.password', ['user' => $user->id]) }}" method="POST">
+                <form class="form-horizontal" action="{{ route('profile.password', ['user' => $user->id]) }}"
+                    method="POST">
                     @csrf @method('PATCH')
                     <x-forms.input-group id="kata_sandi_lama" type="password" label='Kata Sandi Lama' name='kata_sandi_lama'
                         old="false" />
@@ -66,4 +53,3 @@
         </div>
     </x-user-profile>
 @endsection
-<x-forms.preview-foto-ktp />
