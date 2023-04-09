@@ -4,7 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>{{ config('app.name') }}</title>
+    <title>
+        @hasSection('title')
+            @yield('title') — {{ config('app.name') }}
+        @else
+            {{ config('app.name') }}
+        @endif
+    </title>
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->

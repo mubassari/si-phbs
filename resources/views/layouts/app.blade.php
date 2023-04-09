@@ -1,4 +1,5 @@
 @extends('layouts.master', ['class' => 'hold-transition sidebar-mini'])
+@section('title', $breadcrumb)
 @section('main')
     <div class="wrapper">
         <!-- Navbar -->
