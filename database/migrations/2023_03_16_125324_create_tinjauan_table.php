@@ -22,7 +22,6 @@ class CreateTinjauanTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete("cascade");
             $table->foreignIdFor(Preferensi::class, 'preferensi_id')->constrained('preferensi', 'id')->onDelete("cascade");
             $table->foreignIdFor(Survey::class, 'survey_id')->constrained('survey', 'id')->onDelete("cascade");
-            $table->timestamps();
         });
     }
 

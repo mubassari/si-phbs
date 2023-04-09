@@ -26,7 +26,7 @@ class Tinjauan extends Model
         'updated_at'
     ];
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * Get the user that owns the Tinjauan
