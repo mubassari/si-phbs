@@ -15,11 +15,9 @@
                 </tr>
                 @foreach ($list_survey as $key_x => $survey)
                     <tr>
-                        <td>{{ $loop->iteration }}.</th>
+                        <td>{{ $loop->iteration }}</th>
                         <td>{{ $survey->pertanyaan }}</td>
-                        <td>
-                            {{ $survey->preferensi->where('id', $list_tinjauan->whereIn('survey_id', $survey->id)->pluck('preferensi_id')[0])->pluck('jawaban')[0] }}
-                        </td>
+                        <td>{{ $survey->tinjauan->firstWhere('user_id', auth()->user()->id)?->preferensi->jawaban }}</td>
                     </tr>
                 @endforeach
             </table>

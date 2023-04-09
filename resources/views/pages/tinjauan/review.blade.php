@@ -8,18 +8,17 @@
         <div class="card">
             <div class="card-header h4">Jawaban Survey</div>
             <div class="card-body">
-                <table>
-                    @foreach ($tinjauan as $survey)
+                <table class="table table-bordered">
+                    <tr>
+                        <th>No</th>
+                        <th>Pertanyaan</th>
+                        <th>Jawaban</th>
+                    </tr>
+                    @foreach ($list_survey as $key_x => $survey)
                         <tr>
-                            <th rowspan="2" class="align-top h4 p-1">{{ $loop->iteration }}.</th>
-                            <th class="h4 p-1">{{ $survey['pertanyaan'] }}</th>
-                        </tr>
-                        <tr>
-                            <td class="mb-3">
-                                <div class="btn btn-primary">
-                                    {{ $survey['jawaban'] }}
-                                </div>
-                            </td>
+                            <td>{{ $loop->iteration }}</th>
+                            <td>{{ $survey->pertanyaan }}</td>
+                            <td>{{ $survey->tinjauan->firstWhere('user_id', $user->id)?->preferensi->jawaban }}</td>
                         </tr>
                     @endforeach
                 </table>

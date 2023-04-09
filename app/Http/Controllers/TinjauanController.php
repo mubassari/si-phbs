@@ -17,20 +17,7 @@ class TinjauanController extends Controller
 
     public function review(User $user)
     {
-        $tinjauan = collect([$user])->transform(function($data) {
-            $survey_tinjauan = [];
-            foreach ($data->tinjauan->sortBy(function($tinjauan) {
-                return $tinjauan->survey_id;
-            }) as $detail) {
-                array_push($survey_tinjauan, [
-                    'pertanyaan' => $detail->survey->pertanyaan,
-                    'jawaban'    => $detail->preferensi->jawaban,
-                ]);
-            }
-
-            return $survey_tinjauan;
-        })->first();
-
-        return view('pages.tinjauan.review', compact('user', 'tinjauan'));
+        $list_survey = Survey::withCount('preferensi')->get();
+        return view('pages.tinjauan.review', compact('user', 'list_survey'));
     }
 }
