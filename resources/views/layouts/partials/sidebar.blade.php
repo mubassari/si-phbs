@@ -62,7 +62,7 @@
                         data-accordion="false">
                         <li class="nav-item">
                             <a href="{{ route('tinjauan.index') }}"
-                                class="nav-link {{ Request::is('tinjauan') ? 'active' : '' }}">
+                                class="nav-link {{ Request::is('tinjauan*') ? 'active' : '' }}">
                                 <i class="nav-icon fa fa-list-alt"></i>
                                 <p>Tinjauan</p>
                             </a>
@@ -70,7 +70,7 @@
                     </ul>
                 @endif
 
-                @if (\App\Models\Survey::count() > 0)
+                @if (\App\Models\Survey::count() > 0 && auth()->user()->status_verifikasi)
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
