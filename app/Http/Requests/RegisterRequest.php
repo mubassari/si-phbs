@@ -38,4 +38,18 @@ class RegisterRequest extends FormRequest
             'foto_ktp' => "image|mimes:jpeg,png,jpg|max:2048",
         ];
     }
+
+
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'telpon.unique' => 'Pengguna sudah terdaftar.'
+        ];
+    }
 }

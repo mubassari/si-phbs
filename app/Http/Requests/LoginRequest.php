@@ -54,4 +54,16 @@ class LoginRequest extends FormRequest
             }
         });
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'telpon.exists' => 'Pengguna tidak tersedia.'
+        ];
+    }
 }
