@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserSettingController extends Controller
 {
@@ -17,21 +17,37 @@ class UserSettingController extends Controller
 
     public function updateProfil(UserRequest $request, User $user)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->safe()->except('password');
-            if ($request->has('foto_ktp')) {
-                File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-                $name_file = $request->foto_ktp->hashName();
-                $validated['foto_ktp'] = $name_file;
-                $request->foto_ktp->move('img/foto-ktp', $name_file);
+            $user->fill($validated);
+
+            $name_file = $request->foto_ktp->hashName();
+            if ($request->hasFile('foto_ktp') && !$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
             }
-            $user->update($validated);
+
+            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
+               ]);
+            }
+
+            $user->foto_ktp = $name_file;
+            $user->save();
+
+            DB::commit();
 
             return redirect()->route('profile.detail')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil memperbarui data Profil Anda!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->route('profile.detail')->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'

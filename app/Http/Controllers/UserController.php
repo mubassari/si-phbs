@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -22,20 +22,30 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
-            $name_file = $request->foto_ktp->hashName();
-            $validated['foto_ktp'] = $name_file;
-            $validated['password'] = bcrypt($validated['password']);
-            User::create($validated);
+            $validated['password'] = bcrypt($request->password);
+            $user = User::create($validated);
 
-            $request->foto_ktp->move('img/foto-ktp', $name_file);
+            $name_file = $request->foto_ktp->hashName();
+            if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
+            }
+            $user->foto_ktp = $name_file;
+            $user->save();
+
+            DB::commit();
 
             return redirect()->route('user.index')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil menyimpan data User!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!'
@@ -50,21 +60,38 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
-            if ($request->has('foto_ktp')) {
-                File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
-                $name_file = $request->foto_ktp->hashName();
-                $validated['foto_ktp'] = $name_file;
-                $request->foto_ktp->move('img/foto-ktp', $name_file);
+            $validated['password'] = bcrypt($request->password);
+            $user->fill($validated);
+
+            $name_file = $request->foto_ktp->hashName();
+            if ($request->hasFile('foto_ktp') && !$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
             }
-            $user->update($validated);
+
+            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
+               ]);
+            }
+
+            $user->foto_ktp = $name_file;
+            $user->save();
+
+            DB::commit();
 
             return redirect()->route('user.index')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil memperbarui data User!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
@@ -74,18 +101,28 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        DB::beginTransaction();
         try {
             $user->delete();
-            File::delete(public_path("img/foto-ktp/$user->foto_ktp"));
 
-            return redirect()->route('user.index')->with('alert', [
+            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete('img/foto-ktp/' . $user->foto_ktp)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar. Silakan coba lagi!'
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('users.index')->with('alert', [
                 'status' => 'success',
-                'pesan'  => 'Anda berhasil menghapus data User!'
+                'pesan'  => 'Data pengguna berhasil dihapus!'
             ]);
         } catch (\Exception $e) {
-            return back()->withInput()->with('alert', [
+            DB::rollBack();
+            return redirect()->route('users.index')->with('alert', [
                 'status' => 'danger',
-                'pesan'  => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi!'
+                'pesan'  => 'Terjadi kesalahan saat menghapus data pengguna. Silakan coba lagi!'
             ]);
         }
     }
@@ -114,7 +151,6 @@ class UserController extends Controller
 
     public function verify(Request $request, User $user)
     {
-        // dd($request);
         try {
             $user->update([
                 'status_verifikasi' => true,

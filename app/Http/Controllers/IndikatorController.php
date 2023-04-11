@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IndikatorRequest;
 use App\Models\Indikator;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class IndikatorController extends Controller
 {
@@ -21,19 +21,29 @@ class IndikatorController extends Controller
 
     public function store(IndikatorRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
-            $name_file = $request->foto->hashName();
-            $validated['foto'] = $name_file;
-            Indikator::create($validated);
+            $indikator = Indikator::create($validated);
 
-            $request->foto->move('img/foto-indikator', $name_file);
+            $name_file = $request->foto->hashName();
+            if (!$request->foto->move('img/foto-indikator', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
+            }
+            $indikator->foto = $name_file;
+            $indikator->save();
+
+            DB::commit();
 
             return redirect()->route('indikator.index')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil menyimpan data Indikator!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!'
@@ -48,22 +58,37 @@ class IndikatorController extends Controller
 
     public function update(IndikatorRequest $request, Indikator $indikator)
     {
-        try{
+        DB::beginTransaction();
+        try {
             $validated = $request->validated();
+            $indikator->fill($validated);
 
-            if ($request->has('foto')) {
-                File::delete(public_path("img/foto-indikator/$indikator->foto"));
-                $name_file = $request->foto->hashName();
-                $request->foto->move('img/foto-indikator', $name_file);
+            $name_file = $request->foto->hashName();
+            if ($request->hasFile('foto') && !$request->foto->move('img/foto-indikator', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
             }
 
-            $indikator->update($validated);
+            if (Storage::exists("img/foto-ktp/$indikator->foto") && !Storage::delete("img/foto-ktp/$indikator->foto")){
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
+               ]);
+            }
+
+            $indikator->foto = $name_file;
+            $indikator->save();
+
+            DB::commit();
 
             return redirect()->route('indikator.index')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil memperbarui data Indikator!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi!'
@@ -73,15 +98,25 @@ class IndikatorController extends Controller
 
     public function destroy(Indikator $indikator)
     {
+        DB::beginTransaction();
         try {
             $indikator->delete();
-            File::delete(public_path("img/foto-indikator/$indikator->foto"));
+
+            if (Storage::exists("img/foto-ktp/$indikator->foto_ktp") && !Storage::delete('img/foto-ktp/' . $indikator->foto_ktp)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar. Silakan coba lagi!'
+                ]);
+            }
+
+            DB::commit();
 
             return redirect()->route('indikator.index')->with('alert', [
                 'status' => 'success',
                 'pesan'  => 'Anda berhasil menghapus data Indikator!'
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi!'

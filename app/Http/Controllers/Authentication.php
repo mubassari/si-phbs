@@ -37,21 +37,31 @@ class Authentication extends Controller
     }
     function register(RegisterRequest $request)
     {
-        try{
+        DB::beginTransaction();
+        try {
             $validated = $request->validated();
+            $validated['password'] = bcrypt($request->password);
+            $user = User::create($validated);
 
             $name_file = $request->foto_ktp->hashName();
-            $request->foto_ktp->move('img/foto-ktp', $name_file);
-            $validated['foto_ktp'] = $name_file;
-            $validated['password'] = bcrypt($request->password);
-            User::create($validated);
+            if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                return back()->withInput()->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                ]);
+            }
+            $user->foto_ktp = $name_file;
+            $user->save();
+
+            DB::commit();
 
             return redirect()->route('login')->with('alert', [
-                    'status' => 'success',
-                    'pesan'  => 'Pendaftaran berhasil! Silakan masuk untuk mengisi survey!'
+                'status' => 'success',
+                'pesan'  => 'Pendaftaran berhasil! Silakan masuk untuk mengisi survey!'
             ]);
         } catch (\Exception $e) {
-            return redirect()->route('register')->with('alert', [
+            DB::rollBack();
+            return back()->withInput()->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Terjadi kesalahan saat mendaftarkan data. Silakan coba lagi!'
             ]);
