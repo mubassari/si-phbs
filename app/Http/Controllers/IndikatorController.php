@@ -24,6 +24,7 @@ class IndikatorController extends Controller
         try {
             $validated = $request->validated();
             $name_file = $request->foto->hashName();
+            $validated['foto'] = $name_file;
             Indikator::create($validated);
 
             $request->foto->move('img/foto-indikator', $name_file);
