@@ -1,4 +1,4 @@
-@extends('layouts.app', ['breadcrumb' => 'Review Survey User'])
+@extends('layouts.app', ['breadcrumb' => 'Review Survey ' . $user->nama])
 @section('content')
     <x-user-profile :user="$user">
         <div class="callout callout-info">
