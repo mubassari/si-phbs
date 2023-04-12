@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\IndikatorRequest;
 use App\Models\Indikator;
 use Illuminate\Support\Facades\Storage;
@@ -26,14 +27,18 @@ class IndikatorController extends Controller
             $validated = $request->validated();
             $indikator = Indikator::create($validated);
 
-            $name_file = $request->foto->hashName();
-            if (!$request->foto->move('img/foto-indikator', $name_file)) {
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
-                ]);
+            if ($request->hasFile('foto')){
+                $name_file = $request->foto->hashName();
+                if (!$request->foto->move('img/foto-indikator', $name_file)) {
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                    ]);
+                }
+
+                $indikator->foto = $name_file;
             }
-            $indikator->foto = $name_file;
+            $indikator->isi = preg_replace("/\r|\n|\r\n|&nbsp;/", "", $request->isi);
             $indikator->save();
 
             DB::commit();
@@ -63,22 +68,25 @@ class IndikatorController extends Controller
             $validated = $request->validated();
             $indikator->fill($validated);
 
-            $name_file = $request->foto->hashName();
-            if ($request->hasFile('foto') && !$request->foto->move('img/foto-indikator', $name_file)) {
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
-                ]);
-            }
+            if ($request->hasFile('foto')){
+                $name_file = $request->foto->hashName();
+                if(!$request->foto->move('img/foto-indikator', $name_file)) {
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                    ]);
+                }
 
-            if (Storage::exists("img/foto-ktp/$indikator->foto") && !Storage::delete("img/foto-ktp/$indikator->foto")){
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
-               ]);
-            }
+                if (Storage::exists("img/foto-ktp/$indikator->foto") && !Storage::delete("img/foto-ktp/$indikator->foto")){
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
+                    ]);
+                }
 
-            $indikator->foto = $name_file;
+                $indikator->foto = $name_file;
+            }
+            
             $indikator->save();
 
             DB::commit();

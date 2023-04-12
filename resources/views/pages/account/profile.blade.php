@@ -21,7 +21,7 @@
                         itemValue="{{ $user->telpon }}" />
                     <x-forms.input-group label="Alamat" name="alamat" id="alamat" type="text"
                         itemValue="{{ $user->alamat }}" />
-                    <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="$user->path_foto_ktp ?? null" />
+                    <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="$user->path_foto_ktp ?? null" formName="ktp" />
                     <div class="form-group row">
                         <div class="offset-sm-4 col-sm-8">
                             <button type="submit" class="btn btn-primary">Simpan</button>

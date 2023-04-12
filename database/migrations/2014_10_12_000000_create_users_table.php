@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('nama');
             $table->string('telpon');
             $table->string('alamat');
-            $table->string('foto_ktp');
+            $table->string('foto_ktp')->default('default.png');
             $table->boolean('is_admin')->default(false);
             $table->boolean('status_partisipasi')->default(false);
             $table->boolean('status_draft')->default(true);

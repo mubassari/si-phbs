@@ -43,14 +43,17 @@ class Authentication extends Controller
             $validated['password'] = bcrypt($request->password);
             $user = User::create($validated);
 
-            $name_file = $request->foto_ktp->hashName();
-            if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
-                ]);
+            if ($request->hasFile('foto_ktp')){
+                $name_file = $request->foto_ktp->hashName();
+                if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                    ]);
+                }
+                $user->foto_ktp = $name_file;
             }
-            $user->foto_ktp = $name_file;
+
             $user->save();
 
             DB::commit();

@@ -25,18 +25,27 @@ class IndikatorRequest extends FormRequest
     {
         $rules = [
             'judul' => 'required|string',
-            'isi'   => 'required|string',
-            'foto'  => 'required|image|mimes:jpeg,png,jpg|max:4096',
+            'isi'   => 'required|string|max:65535',
+            'foto'  => 'image|mimes:jpeg,png,jpg|max:4096',
         ];
 
-        // Check if the request is for updating an existing record
-        if ($this->getMethod() == 'PUT' || $this->getMethod() == 'PATCH') {
-            // Skip validation for foto if input is empty
-            if (!$this->hasFile('foto')) {
-                unset($rules['foto']);
-            }
-        }
-
         return $rules;
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        // checks user current password
+        // before making changes
+        $validator->after(function ($validator) {
+            if (in_array($this->isi, ["<br>", "<p><br></p>"])) {
+                $validator->errors()->add('isi', 'Isian ini wajib diisi');
+            }
+        });
     }
 }

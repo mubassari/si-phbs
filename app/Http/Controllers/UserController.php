@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -28,14 +29,16 @@ class UserController extends Controller
             $validated['password'] = bcrypt($request->password);
             $user = User::create($validated);
 
-            $name_file = $request->foto_ktp->hashName();
-            if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
-                ]);
+            if ($request->hasFile('foto_ktp')){
+                $name_file = $request->foto_ktp->hashName();
+                if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                    ]);
+                }
+                $user->foto_ktp = $name_file;
             }
-            $user->foto_ktp = $name_file;
             $user->save();
 
             DB::commit();
@@ -66,22 +69,25 @@ class UserController extends Controller
             $validated['password'] = bcrypt($request->password);
             $user->fill($validated);
 
-            $name_file = $request->foto_ktp->hashName();
-            if ($request->hasFile('foto_ktp') && !$request->foto_ktp->move('img/foto-ktp', $name_file)) {
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
-                ]);
+            if ($request->hasFile('foto_ktp')){
+                $name_file = $request->foto_ktp->hashName();
+                if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!'
+                    ]);
+                }
+
+                if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
+                    return back()->withInput()->with('alert', [
+                        'status' => 'danger',
+                        'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
+                   ]);
+                }
+
+                $user->foto_ktp = $name_file;
             }
 
-            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
-                return back()->withInput()->with('alert', [
-                    'status' => 'danger',
-                    'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
-               ]);
-            }
-
-            $user->foto_ktp = $name_file;
             $user->save();
 
             DB::commit();

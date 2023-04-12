@@ -18,7 +18,7 @@
                             type="password" />
                         <x-forms.input-group label="Alamat" name="alamat" id="alamat" type="text"
                             itemValue="{{ $user->alamat ?? '' }}" />
-                        <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="asset('assets/dist/img/foto-ktp/default.png')" />
+                        <x-forms.input-image label="Foto KTP" name="foto_ktp" :src="asset('assets/dist/img/foto-ktp/default.png')" formName="ktp" />
                         <div class="row">
                             <div class="col-sm-4"></div>
                             <div class="col-sm-8">
