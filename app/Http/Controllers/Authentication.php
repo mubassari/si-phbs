@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\RegisterRequest;
 
 class Authentication extends Controller
 {
@@ -43,7 +44,7 @@ class Authentication extends Controller
             $validated['password'] = bcrypt($request->password);
             $user = User::create($validated);
 
-            if ($request->hasFile('foto_ktp')){
+            if ($request->hasFile('foto_ktp')) {
                 $name_file = $request->foto_ktp->hashName();
                 if (!$request->foto_ktp->move('img/foto-ktp', $name_file)) {
                     return back()->withInput()->with('alert', [
