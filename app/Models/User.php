@@ -106,11 +106,11 @@ class User extends Authenticatable
         if ($this->status_partisipasi) {
             $result = $total_nilai / \App\Models\Survey::count();
             if ($result >= 85) {
-                $text = 'Penerapan PHBS anda sangat Baik';
+                $text = 'SANGAT BAIK';
             } elseif ($result > 70 && $result < 85) {
-                $text = 'Penerapan PHBS anda Normal';
+                $text = 'NORMAL';
             } else {
-                $text = 'Penerapan PHBS anda Perlu ditingkatkan';
+                $text = 'PERLU DITINGKATKAN';
             }
             return ['nilai' => number_format($result, 2), 'keterangan' => $text];
         }
