@@ -18,7 +18,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $indikator->judul }}</td>
-                            <td>{{ $indikator->isi }}</td>
+                            <td>{!! Str::limit($indikator->isi, 250, '') !!}</td>
                             <td>
                                 <div>
                                     <img style="width: 120px" src="{{ $indikator->path_foto }}" alt="{{ $indikator->foto }}">

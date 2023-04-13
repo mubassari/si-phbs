@@ -109,9 +109,9 @@ class SurveyController extends Controller
 
     public function viewSurveySaya()
     {
+        $user = auth()->user();
         $list_survey = Survey::withCount('preferensi')->get();
-        return view('pages.survey.saya', compact('list_survey'));
-
+        return view('pages.survey.saya', compact('list_survey', 'user'));
     }
     public function viewFormSurvey()
     {

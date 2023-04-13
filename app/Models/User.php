@@ -68,9 +68,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function survei(): BelongsToMany
+    public function survey(): BelongsToMany
     {
-        return $this->belongsToMany(Survei::class, 'tinjauan');
+        return $this->belongsToMany(Survey::class, 'tinjauan');
     }
 
     /**
@@ -89,16 +89,28 @@ class User extends Authenticatable
     }
     public function getIconStatusPartisipasiAttribute()
     {
-        $icon = $this->status_partisipasi
-                    ? $this->status_draft
-                        ? 'fa-hourglass-half'
-                        : 'fa-check'
-                    : 'fa-exclamation-circle';
+        $icon = $this->status_draf ? ($this->status_partisipasi && $this->status_draf ? 'fa-check' : 'fa-hourglass-half') : 'fa-exclamation-circle ';
         return "<i class='icon-copy fa $icon'></i>";
     }
     public function getIconStatusDraftAttribute($value)
     {
         $icon = $this->status_draft ? 'fa-exclamation-circle' : 'fa-check';
         return "<i class='icon-copy fa $icon'></i>";
+    }
+
+    public function getHasilSurveyAttribute()
+    {
+        $total_nilai = Preferensi::find($this->tinjauan->pluck('preferensi_id'))->pluck('nilai')->sum();
+        if ($this->status_partisipasi) {
+            $result = $total_nilai / \App\Models\Survey::count();
+            if ($result >= 85) {
+                $text = 'Penerapan PHBS anda sangat Baik';
+            } elseif ($result > 70 && $result < 85) {
+                $text = 'Penerapan PHBS anda Normal';
+            } else {
+                $text = 'Penerapan PHBS anda Perlu ditingkatkan';
+            }
+            return ['nilai' => number_format($result, 2), 'keterangan' => $text];
+        }
     }
 }

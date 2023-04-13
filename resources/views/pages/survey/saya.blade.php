@@ -2,7 +2,8 @@
 @section('content')
     <div class="callout callout-info">
         <h5><i class="fas fa-info"></i> Informasi:</h5>
-        <p>Nilai Anda adalah 00</p>
+        <p>Nilai Anda adalah {{ $user->hasil_survey['nilai'] }}</p>
+        <p>Keterangan  {{ $user->hasil_survey['keterangan'] }}</p>
     </div>
     <div class="card">
         <div class="card-header h3">Jawaban Survey Anda</div>
