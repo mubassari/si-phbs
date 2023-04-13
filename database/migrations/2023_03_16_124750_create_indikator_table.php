@@ -16,7 +16,7 @@ class CreateIndikatorTable extends Migration
         Schema::create('indikator', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->text('isi')->nullable()->default('<br>');
+            $table->text('isi')->nullable();
             $table->string('foto')->default('default.png');
             $table->timestamps();
         });
