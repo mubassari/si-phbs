@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Indikator;
-use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
