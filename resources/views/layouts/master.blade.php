@@ -17,11 +17,6 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
 
     @stack('style')
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
 </head>
 
 <body class="{{ $class }}">
