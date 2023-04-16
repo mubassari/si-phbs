@@ -17,6 +17,7 @@ class CreateIndikatorTable extends Migration
             $table->id();
             $table->string('judul');
             $table->text('isi')->nullable();
+            $table->string('slug')->nullable();
             $table->string('foto')->default('default.png');
             $table->timestamps();
         });

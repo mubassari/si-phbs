@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Indikator;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class IndikatorTableSeeder extends Seeder
 {
@@ -193,7 +194,7 @@ class IndikatorTableSeeder extends Seeder
                 <i>sumber : Yuk, Rutin Lakukan Aktivitas Fisik 30 Menit Setiap Hari! | Popmama.com</i>
             </p>"],
             ["Tidak meroko", "<p>
-                <p> 
+                <p>
                     Bahaya dan Dampak Asap Rokok di Dalam Rumah Masa sekarang merokok sudah menjadi sebuah rutinitas bagi perokok. Tanpa perduli dimana dan ada siapa disekitar saat sedang merokok. Merokok sendiri meninggalkan bau serta racun pada baju, ruangan dan benda disekitar perokok. Rokok yang dibakar akan meninggalkan nikotin di ruangan, tentu hal ini merupakan bahaya. Padahal nikotin sendiri dapat berada pada permukaan benda selama berhari-hari. Permukaan yang ditempeli zat-zat beracun ini tentu akan sangat berbahaya kalau sampai disentuh oleh jari-jari balita. Tentu saja merokok bersifat karsinogenik dimana zat karsinogenik muncul dari rokok yang belum dibakar atau asap rokok atau biasa disebut tobacco-spesific nitrosamines (TSNAs). TSNAs lebih cepat terbentuk dalam ruangan/dalam rumah yang dipakai untuk merokok. Jejak yang ditinggalkan pada perokok saat merokok akan membentuk zat beracun yang kemudian melekat pada perabotan dalam rumah. Jika dalam rumah terdapat anak-anak tentu akan sangat berbahaya karena memiliki kontak erat dengan perabotan rumah dan tidak menyadari akan zat beracun yang menempel. Zat sisa rokok pada perokok yang merokok di dalam rumah akan bertahan dalam waktu yang lama hingga puluhan tahun, dan jumlah kadar racun yang tersimpan di dalam rumah akan terus bertambah. Hal tersebut yang menyebabkan siapapun dapat terpapar dampaknya. Lingkungan dalam rumah pun menjadi tidak sehat karena telah terpapar hasil merokok di dalam rumah. Salah satu zat yang diketahui bersifat karsinogenik dan dapat tersimpan di lingkungan selama bertahun-tahun adalah polycyclic aromatic hydrocarbons (PAH). Komponen ini menyerap ke dalam permukaan yang ada dalam rumah seperti dinding, furnitur, dan benda berbahan gypsum serta karpet di dalam rumah. Dampak yang ditimbulkan pada lingkungan dengan adanya perokok dalam rumah ialah kanker bahkan meningkatkan risiko kanker pada nonperokok/perokok pasif dalam rumah karena sudah terkontaminasinya zat nikotin pada dalam rumah. Paparan zat sisa rokok pada aktivitas rokok dalam rumah juga dapat memicu inflamasi paru yang dapat berakibat pada penyakit paru obstruksi kronis (PPOK) dan asma, serta menghambat penyembuhan luka pada permukaan kulit. Dampak ini tentu saja tidak hanya dapat dirasakan oleh si perokok namun juga pada third hand smoke atau orang ketiga. Orang ketiga ini biasanya adalah anak-anak yang tinggal dalam lingkungan rumah perokok. Bahaya perokok ke-3 (third-hand smoke) antara lain :
                 </p>
                 <ul>
@@ -214,8 +215,8 @@ class IndikatorTableSeeder extends Seeder
         foreach ($data_text as $value) {
             Indikator::create([
                 'judul' => $value[0],
-                'isi' => $value[1],
-                'foto' => 'default.jpg',
+                'isi'   => $value[1],
+                'foto'  => 'default.jpg',
             ]);
         }
     }
