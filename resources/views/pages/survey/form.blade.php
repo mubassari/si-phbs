@@ -26,5 +26,5 @@
     </div>
 </div>
 
-<a class="btn btn-warning text-white" href="{{ route('survey.index') }}">Kembali</a>
+<a class="btn btn-secondary text-white" href="{{ route('survey.index') }}">Kembali</a>
 <button type="submit" class="btn btn-primary">{{ $tombol }}</button>
