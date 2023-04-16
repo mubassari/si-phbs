@@ -20,7 +20,8 @@ class SurveyController extends Controller
 
     public function create()
     {
-        return view('pages.survey.create');
+        $preferensi = collect([['id' => 0, 'jawaban' => '', 'nilai' => 0]]);
+        return view('pages.survey.create', compact('preferensi'));
     }
 
     public function store(SurveyRequest $request)
@@ -30,11 +31,11 @@ class SurveyController extends Controller
             $validated = $request->validated();
             $survey = Survey::create(['pertanyaan' => $validated['pertanyaan']]);
 
-            for ($i = 0; $i < 3; $i++) {
+            foreach ($validated['preferensi'] as $value) {
                 Preferensi::create([
                     'survey_id' => $survey->id,
-                    'jawaban' => $validated['jawaban'][$i],
-                    'nilai' => $validated['nilai'][$i]
+                    'jawaban'   => $value['jawaban'],
+                    'nilai'     => $value['nilai']
                 ]);
             }
 
@@ -67,11 +68,12 @@ class SurveyController extends Controller
             $validated = $request->validated();
             $survey->update(['pertanyaan' => $validated['pertanyaan']]);
 
-            foreach ($request['id'] as $key => $preferensi_id) {
-                $preferensi = Preferensi::findOrFail($preferensi_id);
-                $preferensi->update([
-                    'jawaban' => $validated['jawaban'][$key],
-                    'nilai' => $validated['nilai'][$key]
+            Preferensi::where('survey_id', $survey->id)->delete();
+            foreach ($validated['preferensi'] as $value) {
+                Preferensi::create([
+                    'survey_id' => $survey->id,
+                    'jawaban'   => $value['jawaban'],
+                    'nilai'     => $value['nilai']
                 ]);
             }
 

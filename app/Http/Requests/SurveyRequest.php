@@ -23,11 +23,20 @@ class SurveyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'pertanyaan' => 'required|string',
-            'jawaban.*' => 'required|string',
-            'nilai.*' => 'required|numeric|not_in:0',
-        ];
+        $rules = ['pertanyaan' => 'required|string'];
+
+        $preferensi = $this->request->get('preferensi', []);
+
+        if (!empty($preferensi)) {
+            foreach ($preferensi as $key => $val) {
+                $rules["preferensi.{$key}.jawaban"] = 'required|string';
+                $rules["preferensi.{$key}.nilai"]   = 'required|numeric|not_in:0';
+            }
+        } else {
+            $rules['preferensi'] = 'required';
+        }
+
+        return $rules;
     }
 
     /**
@@ -37,9 +46,18 @@ class SurveyRequest extends FormRequest
      */
     public function messages()
     {
-        foreach ($this->get('nilai') as $key => $value) {
-            $messages['nilai.'.$key.'.not_in'] = 'Isian ini wajib diisi';
+        $messages = [
+            'preferensi.required' => 'Preferensi wajib diisi.',
+        ];
+
+        $preferensi = $this->get('preferensi', []);
+
+        if (!empty($preferensi)) {
+            foreach ($this->get('preferensi') as $key => $value) {
+                $messages["preferensi.{$key}.nilai.not_in"] = 'Isian ini wajib diisi';
+            }
         }
+
         return $messages;
     }
 }
