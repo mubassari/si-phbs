@@ -4,10 +4,13 @@
 
 @push('script')
     <script>
-        $('form').on('change', function() {
-            // Remove any validation errors
-            $(this).find('.is-invalid').removeClass('is-invalid');
-            $(this).find('.invalid-feedback').remove();
+        $('form').on('change', function(event) {
+            // Get the input element that has changed
+            const input = event.target;
+
+            // Remove any validation errors on this input
+            $(input).removeClass('is-invalid');
+            $(input).siblings('.invalid-feedback').remove();
         });
     </script>
 @endpush
