@@ -78,7 +78,7 @@ class UserController extends Controller
                     ]);
                 }
 
-                if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
+                if (Storage::exists("img/foto-ktp/$user->foto_ktp") && $user->foto_ktp !== 'default.png' && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
                     return back()->withInput()->with('alert', [
                         'status' => 'danger',
                         'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
@@ -111,7 +111,7 @@ class UserController extends Controller
         try {
             $user->delete();
 
-            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete('img/foto-ktp/' . $user->foto_ktp)) {
+            if (Storage::exists("img/foto-ktp/$user->foto_ktp") && $user->foto_ktp !== 'default.png' && !Storage::delete('img/foto-ktp/' . $user->foto_ktp)) {
                 return back()->withInput()->with('alert', [
                     'status' => 'danger',
                     'pesan'  => 'Terjadi kesalahan saat menghapus gambar. Silakan coba lagi!'

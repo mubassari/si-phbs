@@ -77,7 +77,7 @@ class IndikatorController extends Controller
                     ]);
                 }
 
-                if (Storage::exists("img/foto-ktp/$indikator->foto") && !Storage::delete("img/foto-ktp/$indikator->foto")){
+                if (Storage::exists("img/foto-indikator/$indikator->foto") && $indikator->foto !== 'default.jpg' && !Storage::delete("img/foto-indikator/$indikator->foto")){
                     return back()->withInput()->with('alert', [
                         'status' => 'danger',
                         'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
@@ -86,7 +86,7 @@ class IndikatorController extends Controller
 
                 $indikator->foto = $name_file;
             }
-            
+
             $indikator->save();
 
             DB::commit();
@@ -110,7 +110,7 @@ class IndikatorController extends Controller
         try {
             $indikator->delete();
 
-            if (Storage::exists("img/foto-ktp/$indikator->foto_ktp") && !Storage::delete('img/foto-ktp/' . $indikator->foto_ktp)) {
+            if (Storage::exists("img/foto-indikator/$indikator->foto") && $indikator->foto !== 'default.jpg' && !Storage::delete('img/foto-indikator/' . $indikator->foto)) {
                 return back()->withInput()->with('alert', [
                     'status' => 'danger',
                     'pesan'  => 'Terjadi kesalahan saat menghapus gambar. Silakan coba lagi!'

@@ -32,7 +32,7 @@ class UserSettingController extends Controller
                     ]);
                 }
 
-                if (Storage::exists("img/foto-ktp/$user->foto_ktp") && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
+                if (Storage::exists("img/foto-ktp/$user->foto_ktp") && $user->foto_ktp !== 'default.png' && !Storage::delete("img/foto-ktp/$user->foto_ktp")){
                     return back()->withInput()->with('alert', [
                         'status' => 'danger',
                         'pesan'  => 'Terjadi kesalahan saat menghapus gambar lama. Silakan coba lagi!'
@@ -41,7 +41,7 @@ class UserSettingController extends Controller
 
                 $user->foto_ktp = $name_file;
             }
-            
+
             $user->save();
 
             DB::commit();
