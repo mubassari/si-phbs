@@ -38,7 +38,6 @@ class IndikatorController extends Controller
 
                 $indikator->foto = $name_file;
             }
-            $indikator->isi = preg_replace("/\r|\n|\r\n|&nbsp;/", "", $request->isi);
             $indikator->save();
 
             DB::commit();
