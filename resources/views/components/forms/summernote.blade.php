@@ -43,7 +43,7 @@
                         'start', 'style', 'valign', 'width', 'data-(.*?)'
                     ], //Remove attributes from remaining tags
                     limitChars: 0, // 0|# 0 disables option
-                    limitDisplay: 'both', // none|text|html|both
+                    limitDisplay: 'text', // none|text|html|both
                     limitStop: false, // true/false
                     notTimeOut: 850, //time before status message is hidden in miliseconds
                     imagePlaceholder: 'https://via.placeholder.com/200'

@@ -2,7 +2,7 @@
     <label for="{{ $name }}" class="col-sm-4 col-form-label">{{ $label }}</label>
     <div class="col-sm-8">
         <div class="mb-3 text-center" id="preview">
-            <img src="{{ !isset($old) ? old($name, $src ?? asset('assets/dist/img/foto-' . $formName . '/default.png')) : $src }}"
+            <img src="{{ !isset($old) ? old($name, $src ?? asset('img/foto-' . $formName . '/default.png')) : $src }}"
                 class="img img-thumbnail" width="{{ $width ?? '180px' }}">
         </div>
         <div class="custom-file">
