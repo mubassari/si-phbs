@@ -17,7 +17,7 @@
                     <div class="col-4">
                         <select name="preferensi[{{ $item['id'] }}][nilai]"
                             class="form-control @error('preferensi.' . $item['id'] . '.nilai') is-invalid @enderror">
-                            @foreach ([0, 70, 80, 90] as $nilai)
+                            @foreach (range(0, 9) as $nilai)
                                 <option
                                     {{ old('preferensi.' . $item['id'] . '.nilai', $item['nilai'] ?? '') == $nilai ? 'selected' : '' }}
                                     value="{{ $nilai }}">
@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-4">
                                 <select name="preferensi[${lastID}][nilai]" class="form-control">
-                                    @foreach ([0, 70, 80, 90] as $nilai)
+                                    @foreach (range(0, 9) as $nilai)
                                         <option {{ $nilai == 0 ? 'selected' : '' }} value="{{ $nilai }}">
                                             {{ $nilai == 0 ? 'Nilai' : $nilai }}
                                         </option>

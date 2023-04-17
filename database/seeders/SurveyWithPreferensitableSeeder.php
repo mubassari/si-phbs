@@ -19,8 +19,12 @@ class SurveyWithPreferensitableSeeder extends Seeder
                 Preferensi::create(
                     [
                         'survey_id' => $survey->id,
-                        'jawaban' => $faker->words(2, true),
-                        'nilai' => $faker->randomElement([70, 80, 90])
+                        'jawaban'   => $faker->words(2, true),
+                        'nilai'     => $faker->randomElement([
+                                            $faker->numberBetween(9, 7),
+                                            $faker->numberBetween(6, 5),
+                                            $faker->numberBetween(4, 1)
+                                        ])
                     ]
                 );
             }

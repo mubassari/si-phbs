@@ -104,7 +104,7 @@ class User extends Authenticatable
     {
         $total_nilai = Preferensi::find($this->tinjauan->pluck('preferensi_id'))->pluck('nilai')->sum();
         if ($this->status_partisipasi) {
-            $result = $total_nilai / \App\Models\Survey::count();
+            $result = ($total_nilai / \App\Models\Survey::count()) * 10;
             if ($result >= 85) {
                 $text = 'SANGAT BAIK';
             } elseif ($result > 70 && $result < 85) {
