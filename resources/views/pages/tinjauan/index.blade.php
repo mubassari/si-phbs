@@ -14,19 +14,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($list_user as $user)
-                            <tr>
-                                <td>{{ $loop->index + $list_user->firstItem() }}</td>
-                                <td>{{ $user->nama }}</td>
-                                <td class="text-center">{{ $user->tinjauan_count . ' dari ' . $survey_count }}</td>
-                                <td class="text-center">{!! $user->icon_status_draft !!}</td>
-                                <td class="text-center">
-                                    <a class="btn btn-sm btn-success"
-                                        href="{{ route('tinjauan.review', ['user' => $user->id]) }}">Review</a>
+                        @if ($list_user->count() > 0)
+                            @foreach ($list_user as $user)
+                                <tr>
+                                    <td>{{ $loop->index + $list_user->firstItem() }}</td>
+                                    <td>{{ $user->nama }}</td>
+                                    <td class="text-center">{{ $user->tinjauan_count . ' dari ' . $survey_count }}</td>
+                                    <td class="text-center">{!! $user->icon_status_draft !!}</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-success"
+                                            href="{{ route('tinjauan.review', ['user' => $user->id]) }}">Review</a>
 
-                                </td>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr class="text-center">
+                                <td colspan="5">Data tidak tersedia</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

@@ -18,39 +18,45 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($list_user as $user)
-                            <tr>
-                                <td>{{ $loop->index + $list_user->firstItem() }}</td>
-                                <td>{{ $user->nama }}</td>
-                                <td>{{ $user->telpon }}</td>
-                                <td>{{ $user->alamat }}</td>
-                                <td><img class="img" width="70px" src="{{ $user->path_foto_ktp }}"
-                                        alt="{{ $user->foto }}"></td>
-                                @if ($user->status_verifikasi)
-                                    <td class="text-center">Terverifikasi</td>
-                                @else
+                        @if ($list_user->count() > 0)
+                            @foreach ($list_user as $user)
+                                <tr>
+                                    <td>{{ $loop->index + $list_user->firstItem() }}</td>
+                                    <td>{{ $user->nama }}</td>
+                                    <td>{{ $user->telpon }}</td>
+                                    <td>{{ $user->alamat }}</td>
+                                    <td><img class="img" width="70px" src="{{ $user->path_foto_ktp }}"
+                                            alt="{{ $user->foto }}"></td>
+                                    @if ($user->status_verifikasi)
+                                        <td class="text-center">Terverifikasi</td>
+                                    @else
+                                        <td class="text-center">
+                                            <form method="POST"
+                                                action="{{ route('user.verify', ['user' => $user->id]) }}"class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary">Verifikasi</button>
+                                            </form>
+                                        </td>
+                                    @endif
+                                    <td class="text-center">{!! $user->icon_status_partisipasi !!}</td>
                                     <td class="text-center">
-                                        <form method="POST"
-                                            action="{{ route('user.verify', ['user' => $user->id]) }}"class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary">Verifikasi</button>
-                                        </form>
+                                        <div style="width: 110px">
+                                            <a class="btn btn-sm btn-success"
+                                                href="{{ route('user.edit', ['user' => $user->id]) }}">Edit</a>
+                                            <form method="POST" action="{{ route('user.destroy', ['user' => $user->id]) }}"
+                                                class="d-inline" onsubmit="return confirm('Yakin menghapus data ini ?')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
-                                @endif
-                                <td class="text-center">{!! $user->icon_status_partisipasi !!}</td>
-                                <td class="text-center">
-                                    <div style="width: 110px">
-                                        <a class="btn btn-sm btn-success"
-                                            href="{{ route('user.edit', ['user' => $user->id]) }}">Edit</a>
-                                        <form method="POST" action="{{ route('user.destroy', ['user' => $user->id]) }}"
-                                            class="d-inline" onsubmit="return confirm('Yakin menghapus data ini ?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr class="text-center">
+                                <td colspan="8">Data tidak tersedia</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

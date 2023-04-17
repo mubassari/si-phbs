@@ -15,36 +15,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($list_survey as $key_x => $survey)
-                            <tr>
-                                <th rowspan="{{ $survey->preferensi_count + 1 }}" scope="row" class="text-center">
-                                    {{ $loop->iteration }}</th>
-                                <td rowspan="{{ $survey->preferensi_count + 1 }}">{{ $survey->pertanyaan }}</td>
-                            </tr>
-                            @foreach ($survey->preferensi as $key_y => $preferensi)
+                        @if ($list_survey->count() > 0)
+                            @foreach ($list_survey as $key_x => $survey)
                                 <tr>
-                                    <td>{{ $preferensi->jawaban }}</td>
-                                    <td>{{ $preferensi->nilai }}</td>
-                                    @if ($survey->id == $preferensi->survey_id)
-                                        <td rowspan="{{ $survey->preferensi_count + 1 }}" class="text-center">
-                                            <div style="width: 110px">
-                                                <a class="btn btn-sm btn-success"
-                                                    href="{{ route('survey.edit', ['survey' => $survey->id]) }}">Edit</a>
-                                                <form method="POST" class="d-inline"
-                                                    action="{{ route('survey.destroy', ['survey' => $survey->id]) }}"
-                                                    onsubmit="return confirm('Yakin menghapus data ini ?')">
-                                                    @csrf @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    @endif
-                                    @php
-                                        $survey->id++;
-                                    @endphp
+                                    <th rowspan="{{ $survey->preferensi_count + 1 }}" scope="row" class="text-center">
+                                        {{ $loop->iteration }}</th>
+                                    <td rowspan="{{ $survey->preferensi_count + 1 }}">{{ $survey->pertanyaan }}</td>
                                 </tr>
+                                @foreach ($survey->preferensi as $key_y => $preferensi)
+                                    <tr>
+                                        <td>{{ $preferensi->jawaban }}</td>
+                                        <td>{{ $preferensi->nilai }}</td>
+                                        @if ($survey->id == $preferensi->survey_id)
+                                            <td rowspan="{{ $survey->preferensi_count + 1 }}" class="text-center">
+                                                <div style="width: 110px">
+                                                    <a class="btn btn-sm btn-success"
+                                                        href="{{ route('survey.edit', ['survey' => $survey->id]) }}">Edit</a>
+                                                    <form method="POST" class="d-inline"
+                                                        action="{{ route('survey.destroy', ['survey' => $survey->id]) }}"
+                                                        onsubmit="return confirm('Yakin menghapus data ini ?')">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        @endif
+                                        @php
+                                            $survey->id++;
+                                        @endphp
+                                    </tr>
+                                @endforeach
                             @endforeach
-                        @endforeach
+                        @else
+                            <tr class="text-center">
+                                <td colspan="5">Data tidak tersedia</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
