@@ -10,7 +10,7 @@ use App\Http\Controllers\Authentication;
 use App\Http\Controllers\UserSettingController;
 
 Route::get('', [MainController::class, 'beranda'])->name('beranda');
-Route::get('indikator/{slug}', [MainController::class, 'post'])->name('indikator.show');
+Route::get('artikel/{slug}', [MainController::class, 'post'])->name('indikator.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware('redirect.unauthorize:admin')->group(function () {
