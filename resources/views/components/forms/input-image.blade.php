@@ -3,7 +3,7 @@
     <div class="col-sm-8">
         <div class="mb-3 text-center" id="preview">
             <img src="{{ !isset($old) ? old($name, $src ?? asset('img/foto-' . $formName . '/default.png')) : $src }}"
-                class="img img-thumbnail" width="{{ $width ?? '180px' }}">
+                class="img img-thumbnail" width="{{ $width ?? '180px' }}" id="foto-{{ $formName }}">
         </div>
         <div class="custom-file">
             <input type="file" name="{{ $name }}" {{ $attributes }}
@@ -34,6 +34,9 @@
                 }
             }
             reader.readAsDataURL(event.target.files[0]);
+        });
+        $("#foto-{{ $formName }}").click(function() {
+            $("#{{ $name }}").click();
         });
     </script>
 @endpush
