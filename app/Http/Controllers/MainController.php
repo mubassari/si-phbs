@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Indikator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MainController extends Controller
 {
@@ -14,7 +15,14 @@ class MainController extends Controller
 
     public function post($slug)
     {
-        $indikator = Indikator::where('slug', $slug)->get()[0];
-        return view('pages.indikator.show', compact('indikator'));
+        try {
+            $indikator = Indikator::where('slug', $slug)->firstOrFail();
+            return view('pages.indikator.show', compact('indikator'));
+        } catch (ModelNotFoundException $exception) {
+            return redirect('/')->with('alert', [
+                'status' => 'danger',
+                'pesan'  => 'Artikel yang Anda ingin akses saat ini tidak atau belum tersedia!'
+            ]);
+        }
     }
 }
