@@ -34,11 +34,17 @@ class Indikator extends Model
     protected static function boot()
     {
         parent::boot();
+        
         static::created(function ($post) {
             $post->slug = $post->generateSlug($post->judul);
             $post->save();
         });
+
+        static::saving(function ($post) {
+            $post->slug = $post->generateSlug($post->judul);
+        });
     }
+
     private function generateSlug($judul)
     {
         if (static::whereSlug($slug = Str::slug($judul))->exists()) {
