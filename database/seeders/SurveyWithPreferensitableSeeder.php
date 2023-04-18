@@ -20,11 +20,11 @@ class SurveyWithPreferensitableSeeder extends Seeder
                     [
                         'survey_id' => $survey->id,
                         'jawaban'   => $faker->words(2, true),
-                        'nilai'     => $faker->randomElement([
+                        'nilai'     => [
                                             $faker->numberBetween(9, 7),
                                             $faker->numberBetween(6, 5),
                                             $faker->numberBetween(4, 1)
-                                        ])
+                                        ][$x]
                     ]
                 );
             }
