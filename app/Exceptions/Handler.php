@@ -41,9 +41,13 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        return redirect('/')->with('alert', [
-            'status' => 'danger',
-            'pesan'  => 'Laman tidak tersedia. Silakan periksa kembali tautan Anda!'
-        ]);
+        if($this->isHttpException($exception)) {
+            return redirect()->intended(route('beranda'))->with('alert', [
+                    'status' => 'danger',
+                    'pesan'  => 'Laman tidak tersedia. Silakan periksa kembali tautan Anda!'
+                ]);
+        } else {
+            return parent::render($request, $exception);
+        }
     }
 }

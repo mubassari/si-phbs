@@ -19,7 +19,7 @@ class MainController extends Controller
             $indikator = Indikator::where('slug', $slug)->firstOrFail();
             return view('pages.indikator.show', compact('indikator'));
         } catch (ModelNotFoundException $exception) {
-            return redirect('/')->with('alert', [
+            return redirect()->intended(route('beranda'))->with('alert', [
                 'status' => 'danger',
                 'pesan'  => 'Artikel yang Anda ingin akses saat ini tidak atau belum tersedia!'
             ]);
