@@ -20,7 +20,12 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</th>
                                 <td>{{ $survey->pertanyaan }}</td>
-                                <td>{{ $survey->tinjauan->firstWhere('user_id', $user->id)?->preferensi->jawaban }}</td>
+                                <td>{{ $survey->pertanyaan }}</td>
+                                <td>
+                                    @if ($survey->tinjauan->firstWhere('user_id', $user->id)->count() !== 0)
+                                        {{ $survey->tinjauan->firstWhere('user_id', $user->id)->preferensi->jawaban }}
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </table>
