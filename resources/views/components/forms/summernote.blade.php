@@ -9,7 +9,7 @@
 
 @push('script')
     <script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/summernote/lang/summernote-id-ID.js') }}"></script>
+    <script src="{{ asset('assets/plugins/summernote/lang/summernote-id-ID.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/summernote/plugin/sticky-toolbar/summernote-sticky-toolbar.js') }}"></script>
     <script src="{{ asset('assets/plugins/summernote/plugin/cleaner/summernote-cleaner.js') }}"></script>
     <script>
